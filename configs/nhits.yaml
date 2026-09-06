@@ -1,0 +1,10 @@
+# NHITS — hierarchical interpolation MLP with multi-rate pooling. Full futr+stat exog.
+# Inherits base.yaml (h=336, input_size=504, MAE loss, robust scaler, seed 42).
+#
+# Runs on an L40S (48GB) — see GPU_FOR in tools/modal_app.py. At ~28.9M params the gapped
+# diagnostic (h=672) peaks near ~24GB, just over the L4's 22GB, so like KAN it takes the bigger
+# card and keeps the vanilla batch for a fair comparison. NOTE: halving windows_batch_size did
+# NOT clear the L4 OOM — the offending ~11.8 GiB allocation is the long-horizon prediction
+# tensor (h=672 over all 96 series), not the training-window batch.
+model: NHITS
+name: nhits

@@ -1,0 +1,22 @@
+# Chronos-2 FULL fine-tune — every parameter trainable, not a LoRA adapter.
+#
+# WHY THIS EXISTS. The 2026-08-17 review found only a LoRA fine-tune had ever been run. Correct, and
+# verified: configs/chronos2_ft.yaml is `finetune_mode: lora`, and no `finetune_mode: "full"`
+# appears in ANY recorded result in this repo. The `--finetune-mode {lora,full}` flag has existed
+# since S3.4 (src/models/chronos2_finetune.py:91) and has never once been exercised. Plan S3.4
+# postponed it: "it is the one that would buy a MEASURED point instead of a predicted one."
+#
+# BATCH SIZE IS DELIBERATELY LOWER THAN THE LoRA ARM'S 192. Full FT holds gradients and AdamW
+# moments for all ~120M parameters (~2 GB beyond LoRA) on top of a batch size that was already
+# tuned to fill a 24 GB L4 — and S5 lost 11 of 32 trials to exactly this class of OOM. 96 is the
+# hedge. NOTE the consequence for the read-out: this arm differs from `chronos_ft` in batch size
+# as well as in adapter mode, so it is NOT a clean LoRA-vs-full ablation. It is a member.
+finetune_mode: full
+learning_rate: 1.0e-5      # appropriate for full FT; LoRA usually wants more
+num_steps: 1000
+batch_size: 96             # LoRA arm uses 192 — see the note above
+context_length: 1024
+prediction_length: 672     # the deployed gapped horizon (gap 336 + scored 336)
+min_past: 512
+seed: 42
+device: cuda

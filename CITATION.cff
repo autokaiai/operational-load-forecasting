@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+message: >-
+  If you refer to this work, please cite this repository. It documents a course
+  project submitted by a group of four, and credit for the underlying work
+  belongs to all four authors listed below.
+title: >-
+  Operational load forecasting: a foundation model as a known-future covariate,
+  and the evidence for every part of the system around it
+abstract: >-
+  336-hour-ahead forecasting of an operational load index across 96 hourly series
+  with 22 covariates, graded by WAPE. The central result is that a frozen,
+  zero-shot Chronos-2 scores worse than the supervised Temporal Fusion
+  Transformer it advises, yet its forecast handed to that model as a known-future
+  covariate is worth +8.1 percent relative, seed-averaged — the largest single step measured
+  here. The same foundation model was measured in all three of the roles it can
+  take, and gives a different answer in each. Around that, a convex blend of the
+  five-seed checkpoint-averaged cascade, a fully fine-tuned copy of the same
+  foundation model, and a LightGBM booster, plus two panel-level corrections. The
+  repository ships the measured negative results alongside the wins, under a
+  gapped cross-validation protocol that mirrors the private split and an
+  admission bar built on a paired cluster bootstrap.
+type: software
+authors:
+  - family-names: Wöllstein
+    given-names: Kai
+  - family-names: Kraft
+    given-names: Jenny
+  - family-names: Hench
+    given-names: Herai
+  - family-names: Tykhonov
+    given-names: Fedir
+version: 1.1.0
+date-released: "2026-09-04"
+license: MIT
+keywords:
+  - time-series forecasting
+  - multivariate forecasting
+  - cross-validation
+  - model selection
+  - foundation models
+  - ensembling

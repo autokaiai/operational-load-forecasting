@@ -1,0 +1,20 @@
+# BiTCN at the SHIPPED TFT's capacity — the 2026-08-17 question: "raise the biTCN to a comparable number
+# as the TFT in hidden size and re-train it."
+#
+# WHY THIS EXISTS. configs/bitcn.yaml sets ONLY `model:` and `name:`, so every BiTCN number in this
+# project was produced at neuralforecast's *library defaults* — `hidden_size=16`, `dropout=0.5`
+# (verified from the constructor signature) — against the TFT's chosen 64 / 0.1. That is not a
+# tuned-to-an-optimum baseline, it is a default nobody ever picked, which is the one situation
+# where "turn the knob up" has a real argument. BiTCN's 0.18050 late is therefore NOT its ceiling.
+#
+# Matched to configs/tft_chronos.yaml on the two knobs that carry capacity, and NOTHING else, so
+# the A/B against `bitcn` isolates model size. Everything else still inherits base.yaml, and the
+# runner overrides `h` to the gapped 672 regardless (src/models/members.py:575).
+#
+# CAVEAT TO CARRY INTO THE READ-OUT: bigger is not automatically better on this problem. S5 swept
+# hidden_size {32,64,128,192} on the TFT over 32 trials and PREFERRED 32 (17 of 21 survivors),
+# landing 0.04 SE from the incumbent. So this is a fair shot at BiTCN's ceiling, not a prediction.
+model: BiTCN
+name: bitcn_wide
+hidden_size: 64      # was 16 (library default) — the TFT ships at 64
+dropout: 0.1         # was 0.5 (library default) — the TFT ships at 0.1

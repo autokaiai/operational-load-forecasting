@@ -1,0 +1,13 @@
+# TiDE — MLP encoder-decoder with explicit future + static covariate channels.
+# Exog lists are injected by src.models.registry (never listed here).
+model: TiDE
+name: tide
+hidden_size: 256
+num_encoder_layers: 1
+num_decoder_layers: 1
+dropout: 0.1
+
+# Batch size: TiDE runs comfortably at 256 windows on the 24GB L4 (measured ~16.4 GiB at the
+# heavier gapped h=672) — 2x the base default for faster throughput.
+windows_batch_size: 256
+inference_windows_batch_size: 256

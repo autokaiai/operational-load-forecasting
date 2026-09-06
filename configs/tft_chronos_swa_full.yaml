@@ -1,0 +1,64 @@
+# S5 Tier D, finally run — the cascade TFT with CHECKPOINT AVERAGING (SWA).
+#
+# EVERY key below that is shared with configs/tft_chronos.yaml is COPIED FROM IT and must stay
+# copied: the arm sits on the shipped backbone, and the measurement is the averaging and nothing
+# else. The only addition is the `swa` block.
+#
+# WHY THIS IS THE EXPERIMENT. Tier D of S5 listed three post-hoc ensembling levers — SWA,
+# seed-bagging, MC-dropout — and S5's gate 1 failed, so Tier D never spawned. Seed-bagging was
+# later paid for anyway (`casc_bag5` averages 5 seeds). SWA was never run, and it attacks a
+# DIFFERENT variance component: seed-bagging averages across basins, checkpoint averaging averages
+# along one trajectory inside a basin. That is the whole hypothesis, and it is why the control is
+# `casc_s892` and not the bag.
+#
+# THE LEVER IS OURS, NOT LIGHTNING'S, AND THAT IS NOT A PREFERENCE. Lightning's
+# StochasticWeightAveraging is epoch-based: `on_fit_start` asserts `trainer.max_epochs is not None`
+# and the averaging window is `swa_start <= current_epoch <= max_epochs - 1`. Under neuralforecast's
+# step-based training `pl.Trainer(max_steps=5000).max_epochs` is None — measured — and
+# neuralforecast RAISES on a `max_epochs` trainer kwarg. So Lightning's callback cannot initialise
+# here and would have been law 5's fourth instance. src/models/swa.py is the step-based equivalent;
+# tests/test_swa.py asserts the averaged weights actually differ from the un-averaged ones.
+#
+# THE SNAPSHOT WINDOW IS A FRACTION OF THE ACTUAL RUN, and the first version of this config got that
+# wrong in a way that was measured. `every_n_steps: 50` + `n_snapshots: 5` averaged a FIXED last-250
+# steps; the three windows early-stopped at wall times spanning 2.19x, so that fixed window covered
+# ~52% of the shortest run and ~24% of the longest, and the delta tracked the fraction on 3/3
+# windows (W0 -0.00997 at ~52%, W2 +0.00190 at ~30%, W1 +0.01710 at ~24%). `tail_fraction: 0.25`
+# makes the window scale-free with respect to where early stopping happens. 0.25 is the original
+# SWA paper's convention (averaging begins at 75% of training) — an EXTERNAL anchor, deliberately
+# not read off our own W1, which happened to sit at ~24% and would have been the number to pick if
+# we were fitting the parameter to the result we had already seen.
+#
+# IT REPLACES `casc_bag5` IN THE BLEND OR IT DOES NOTHING. It is not a fourth member: its errors
+# are cascade errors.
+#
+# Do not drive this config by hand — the cascade channel is a per-window frame with a provenance
+# sidecar, and only the member path resolves it:
+#   python -m scripts.member_preds_window --member tft_cascade_swa --window 0 --cut-idx 3648
+model: TFT
+name: tft_chronos_swa_full
+hidden_size: 64
+n_head: 4
+dropout: 0.1
+
+windows_batch_size: 32
+inference_windows_batch_size: 32
+
+max_steps: 5000
+
+grn_activation: ELU
+
+# --- the lever ------------------------------------------------------------------------------
+# Consumed by registry.build_model, which turns it into a Lightning callback on
+# trainer_kwargs["callbacks"]; it is in _NON_MODEL_KEYS and never reaches the model constructor.
+# No LR schedule of its own: `num_lr_decays` stays at the incumbent's default so this arm measures
+# averaging alone. The two levers are opposed in intent (averaging wants a late trajectory that
+# still moves; decay flattens it), so a combined arm would be unattributable.
+swa:
+  every_n_steps: 50
+  tail_fraction: 0.25
+
+# SPRINT 2 -- MATCHED-STEPS ISOLATION. The scaler A/B moved TWO things: the scaler AND the
+# stopping point (noscale stopped at ~800 steps, the control ran on). `-1` is neuralforecast's
+# "no early stopping", so both arms now run the same 5000 steps and the scaler is alone.
+early_stop_patience_steps: -1

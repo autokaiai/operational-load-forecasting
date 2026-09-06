@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "operational-load-forecasting"
+version = "1.1.0"
+description = "336-hour-ahead multivariate forecasting of an operational load index across 96 units"
+requires-python = ">=3.11"
+# The forecasting stack is PINNED, not ranged, and the pins match requirements.txt exactly.
+# CI installs from this file (`pip install -e ".[dev]"`), never from
+# requirements.txt, so a range here meant CI validated against a *different* library than every
+# recorded number in the repo — it resolved neuralforecast 3.2.0 while all our results come from
+# 3.1.9, and the two differ behaviourally (3.1.9's get_activation_fn("GELU") returns F.elu; 3.2.0
+# returns F.gelu). `torch` deliberately stays ranged: >= 2.2 is the floor the code needs, and the
+# local build is a CUDA-specific wheel that must not be forced on a CPU runner.
+dependencies = [
+    "torch>=2.2",
+    "pandas>=2.2",
+    "numpy>=1.26",
+    "neuralforecast==3.1.9",   # DLinear/TiDE/TSMixerx/TFT in one API (pulls lightning, utilsforecast, ray)
+    "pytorch-lightning==2.5.6",
+    "utilsforecast==0.2.16",
+    "pyyaml>=6",               # experiment configs in configs/
+]
+
+[project.optional-dependencies]
+# Gradient-boosted ensemble members and stackers (src.models.lgbm,
+# scripts.ensemble_metalearner). CPU-only and NOT on the submission inference path, so they
+# stay out of `dependencies` — but they were previously declared only in requirements.txt,
+# which CI never installs, so any test importing lightgbm would have failed there.
+trees = [
+    "lightgbm>=4.0",
+    "catboost>=1.2",
+    "scikit-learn>=1.3",
+    "xgboost>=2.1",            # multi_strategy="multi_output_tree" needs 2.x+
+]
+dev = [
+    # Ruff is PINNED, not ranged. `ruff format` is version-sensitive: an unpinned linter
+    # means CI turns red on someone else's release schedule rather than on a change here.
+    # Bump deliberately, and re-run `ruff format .` in the same commit.
+    "ruff==0.15.14",
+    "pytest>=8.0",
+    "pre-commit>=3.7",
+    "operational-load-forecasting[trees]",  # CI runs `pip install -e ".[dev]"`; tree tests need these
+]
+# Exploratory-analysis libraries used only in local notebooks. Not needed to train, evaluate or
+# run inference, so they are an opt-in extra rather than a dependency.
+eda = [
+    "matplotlib>=3.8",
+    "seaborn>=0.13",
+    "statsmodels>=0.14",
+]
+
+[tool.setuptools.packages.find]
+include = ["src*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+# Local scratch notebooks are not linted.
+extend-exclude = ["notebooks"]
+
+[tool.ruff.lint]
+# pycodestyle (E/W), pyflakes (F), isort (I), pyupgrade (UP), bugbear (B), comprehensions (C4)
+select = ["E", "W", "F", "I", "UP", "B", "C4"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]  # repo root on sys.path so `import predict` works under plain `pytest`

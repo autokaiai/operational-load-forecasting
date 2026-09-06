@@ -1,0 +1,4 @@
+# BiTCN — bidirectional temporal convolutional network. Full futr+stat exog and tiny (~35K
+# params), so it's the fast convolutional family rep. Inherits base.yaml.
+model: BiTCN
+name: bitcn

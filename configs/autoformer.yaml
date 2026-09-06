@@ -1,0 +1,7 @@
+# Autoformer — series-decomposition + auto-correlation transformer. Future covariates, no static.
+# Cap the batch on the 24GB L4.
+model: Autoformer
+name: autoformer
+
+windows_batch_size: 64
+inference_windows_batch_size: 64

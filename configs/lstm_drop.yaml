@@ -1,0 +1,7 @@
+# LSTM variant: wide (hidden 256) + encoder dropout 0.2. Regularized-capacity lever — if
+# lstm_wide overfits (train<<CV), dropout should recover the generalization gap.
+model: LSTM
+name: lstm_drop
+encoder_hidden_size: 256
+decoder_hidden_size: 256
+encoder_dropout: 0.2

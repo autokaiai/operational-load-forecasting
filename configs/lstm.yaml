@@ -1,0 +1,5 @@
+# LSTM — recurrent encoder/decoder; the RNN-family representative. Full futr+stat exog. Recurrent
+# decoding over the 336h horizon is slower per step than the windowed models; small (~236K params)
+# so it inherits base.yaml batch sizes.
+model: LSTM
+name: lstm

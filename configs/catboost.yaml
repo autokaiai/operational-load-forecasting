@@ -1,0 +1,30 @@
+# Direct-multistep CatBoost member (src.models.catboost_tree). NOT a neuralforecast model — its own
+# trainer, sharing LightGBM's design matrix so the A/B isolates the BOOSTER rather than the basis.
+# Keys here override src.models.catboost_tree.DEFAULT_PARAMS; `origin_stride` /
+# `early_stopping_rounds` / `max_boost_round` / `categorical_unit` are consumed by the member runner.
+#
+# `loss_function: MAE` is the aligned objective, not a style choice: pooled WAPE is
+# sum|y-yhat| / sum|y| with a model-independent denominator, so minimising sum|y-yhat| IS minimising
+# WAPE (plan 4.1). An older note in the stacker work reached for MultiRMSE — superseded.
+#
+# Settings mirror `lgbm_s24_unitcat`, the frozen tree, on purpose: origin_stride 24, a measured
+# round count, unit id as a genuine categorical. Anything else and the comparison would confound the
+# library with the configuration.
+#
+# CatBoost RAISES on an unknown parameter where LightGBM only warns. That is why the member runner
+# reads this file WITHOUT merging configs/base.yaml (plan 3.9) — otherwise `h`, `input_size`,
+# `max_steps` and friends would arrive here and the member would die on startup.
+model: CATBOOST
+name: catboost
+
+loss_function: MAE
+learning_rate: 0.03
+# Symmetric (oblivious) trees: depth 6 is exactly 64 leaves, matching LightGBM's num_leaves: 63.
+depth: 6
+l2_leaf_reg: 3.0
+random_seed: 42
+
+origin_stride: 24
+early_stopping_rounds: 50
+max_boost_round: 3000
+categorical_unit: true

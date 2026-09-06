@@ -1,0 +1,4 @@
+# MLP — plain multilayer perceptron. Full futr+stat exog. The simplest neural reference point
+# above the linear/baseline tier. Inherits base.yaml.
+model: MLP
+name: mlp

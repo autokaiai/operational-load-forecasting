@@ -1,0 +1,11 @@
+# Chronos-2 zero-shot benchmark (NOT a neuralforecast model; NOT a submission candidate).
+# Consumed by src.models.chronos2_eval, not src.train / src.models.registry.
+#
+# Chronos-2: amazon/chronos-2 — encoder-only, direct multi-step, native known-future covariates,
+# max horizon 1024 steps, max context 8192. We forecast the full 672h gapped horizon in one call
+# (no autoregressive rollout) and slice the scored 336h block.
+
+model_id: amazon/chronos-2
+device: cuda           # falls back to cpu via --device cpu if no GPU
+batch_series: 0        # series per predict_df call; 0 = all 96 at once. Lower (e.g. 16) if OOM.
+quantile: 0.5          # point forecast = median (matches the nf models' L1/MAE training)

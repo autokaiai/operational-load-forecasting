@@ -1,0 +1,71 @@
+{
+  "name": "lstm_wide",
+  "model": "LSTM",
+  "seed": 42,
+  "config": {
+    "seed": 42,
+    "freq": "h",
+    "h": 336,
+    "input_size": 504,
+    "max_steps": 5000,
+    "learning_rate": 0.001,
+    "val_check_steps": 50,
+    "early_stop_patience_steps": 3,
+    "val_size": 504,
+    "accelerator": "gpu",
+    "devices": 1,
+    "batch_size": 32,
+    "windows_batch_size": 128,
+    "inference_windows_batch_size": 128,
+    "valid_batch_size": 64,
+    "local_scaler_type": "robust",
+    "scaler_type": "identity",
+    "enable_progress_bar": true,
+    "model": "LSTM",
+    "name": "lstm_wide",
+    "encoder_hidden_size": 256,
+    "decoder_hidden_size": 256
+  },
+  "versions": {
+    "neuralforecast": "3.1.9",
+    "torch": "2.12.0+cu130"
+  },
+  "cross_validation": {
+    "n_windows": 3,
+    "step_size": 336,
+    "per_fold_wape": [
+      0.1548278779541791,
+      0.177900729610415,
+      0.16822709740920516
+    ],
+    "cv_wape_mean": 0.1669852349912664,
+    "cv_wape_std": 0.009460295541066479,
+    "cv_metrics_pooled": {
+      "wape": 0.1661886230311447,
+      "mae": 1.754030387714259,
+      "mse": 9.653441517052713,
+      "rmse": 3.106998795791964,
+      "mape": 0.20713816516816097,
+      "smape": 0.18598990057352977
+    }
+  },
+  "gapped_eval": {
+    "cut_idx": 3648,
+    "gapped_h": 672,
+    "score_len": 336,
+    "gapped_metrics": {
+      "wape": 0.16997025285158612,
+      "mae": 1.8153917205672532,
+      "mse": 10.028189535192926,
+      "rmse": 3.1667316803279886,
+      "mape": 0.20995812523362092,
+      "smape": 0.19205696370062725
+    }
+  },
+  "diagnostics_seconds": 428.3,
+  "train_seconds": 199.2,
+  "n_params": 897793,
+  "train_wape": 0.16042844150014304,
+  "train_vs_cv_gap": 0.006556793491123369,
+  "checkpoint": "/outputs/checkpoints/lstm_wide.pt"
+}

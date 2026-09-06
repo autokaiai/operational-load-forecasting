@@ -1,0 +1,7 @@
+# LSTM variant: true autoregressive decode (recurrent=True) instead of the windowed MLP
+# decoder. Genuinely different decode path — rolls the cell state step-by-step over the
+# horizon, conditioning each step on known-future covariates. Slower per step but may track
+# the daily/weekly seasonality more faithfully than the one-shot MLP head.
+model: LSTM
+name: lstm_recurrent
+recurrent: true

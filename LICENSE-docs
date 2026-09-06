@@ -1,0 +1,23 @@
+Documentation licence — `docs/` and `README.md`
+================================================
+
+The prose, tables and diagrams in `docs/` and `README.md` are licensed under the
+Creative Commons Attribution 4.0 International License (CC BY 4.0).
+
+    https://creativecommons.org/licenses/by/4.0/
+
+Copyright (c) 2026 Kai Wöllstein, Jenny Kraft, Herai Hench, Fedir Tykhonov.
+
+You may share and adapt this material for any purpose, including commercially,
+provided you give appropriate credit, link to the licence, and indicate if
+changes were made.
+
+WHAT THIS LICENCE DOES NOT COVER
+--------------------------------
+
+* Source code — everything outside `docs/` and `README.md` — is MIT licensed.
+  See `LICENSE`.
+
+* The dataset (`AIML-TUDA/dlam-ts-project-data-2026`), the `amazon/chronos-2`
+  weights, and the fine-tuned weights derived from them are not ours to
+  license. They carry their own terms.

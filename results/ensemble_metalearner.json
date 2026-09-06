@@ -1,0 +1,96 @@
+{
+  "block_rows": 32256,
+  "series": 96,
+  "blend_double_check_full_block_optimistic": {
+    "standalone": {
+      "tft": 0.1358,
+      "chronos": 0.1642,
+      "lstm": 0.1802,
+      "bitcn": 0.1854
+    },
+    "fine_convex_pairs": {
+      "tft+chronos": {
+        "w_tft": 0.81,
+        "wape": 0.1336
+      },
+      "tft+lstm": {
+        "w_tft": 1.0,
+        "wape": 0.1358
+      },
+      "tft+bitcn": {
+        "w_tft": 1.0,
+        "wape": 0.1358
+      }
+    },
+    "combiners": {
+      "mean": 0.1545,
+      "median": 0.1605,
+      "geomean": 0.1548
+    },
+    "best_simplex_all": {
+      "weights": {
+        "tft": 0.8,
+        "chronos": 0.2,
+        "lstm": 0.0,
+        "bitcn": 0.0
+      },
+      "wape": 0.1336
+    },
+    "oracle_per_series_all": 0.1304
+  },
+  "variants": {
+    "all_cached": {
+      "members": [
+        "tft",
+        "chronos",
+        "lstm",
+        "bitcn"
+      ],
+      "temporal_holdout": {
+        "protocol": "temporal holdout (train blk<224h, test blk>=224h)",
+        "n_test_rows": 10752,
+        "tft_alone": 0.1221,
+        "fixed_blend": {
+          "kind": "simplex",
+          "weights": {
+            "tft": 0.75,
+            "chronos": 0.25,
+            "lstm": 0.0,
+            "bitcn": 0.0
+          },
+          "wape": 0.1247
+        },
+        "mlp_meta": 0.1337,
+        "oracle_per_series": 0.118
+      },
+      "groupkfold": {
+        "protocol": "GroupKFold by series (4 folds, cross-series)",
+        "tft_alone": 0.1358,
+        "mlp_meta_oof": 0.1395
+      }
+    },
+    "tft_chronos": {
+      "members": [
+        "tft",
+        "chronos"
+      ],
+      "temporal_holdout": {
+        "protocol": "temporal holdout (train blk<224h, test blk>=224h)",
+        "n_test_rows": 10752,
+        "tft_alone": 0.1221,
+        "fixed_blend": {
+          "kind": "convex tft+chronos",
+          "w_tft": 0.73,
+          "wape": 0.1251
+        },
+        "mlp_meta": 0.1277,
+        "oracle_per_series": 0.1181
+      },
+      "groupkfold": {
+        "protocol": "GroupKFold by series (4 folds, cross-series)",
+        "tft_alone": 0.1358,
+        "mlp_meta_oof": 0.1347
+      }
+    }
+  }
+}

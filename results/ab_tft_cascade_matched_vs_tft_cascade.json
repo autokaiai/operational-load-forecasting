@@ -1,0 +1,80 @@
+{
+  "candidate": "tft_cascade_matched",
+  "baseline": "tft_cascade",
+  "regime": "full",
+  "checks": {
+    "pooled_improves": {
+      "pass": false,
+      "candidate_pooled_wape": 0.15278236099287917,
+      "baseline_pooled_wape": 0.14030164423754282,
+      "margin": -0.012480716755336352,
+      "margin_relative": -0.08895631140434404
+    },
+    "majority_windows_improve": {
+      "pass": false,
+      "windows_won": [],
+      "windows_required": 2,
+      "windows_total": 3,
+      "per_window_delta": {
+        "2976": -0.017122228985599036,
+        "3312": -0.00953753980381053,
+        "3648": -0.01002892073133324
+      }
+    },
+    "orthogonal": {
+      "pass": false,
+      "threshold": 0.95,
+      "err_corr": {
+        "tft_cascade": 0.9566942449927324
+      }
+    }
+  },
+  "checks_passed": [],
+  "checks_missed": [
+    "pooled_improves",
+    "majority_windows_improve",
+    "orthogonal"
+  ],
+  "evidence": {
+    "per_window_delta": {
+      "2976": -0.017122228985599036,
+      "3312": -0.00953753980381053,
+      "3648": -0.01002892073133324
+    },
+    "per_window_delta_spread": 0.0042442900307414575,
+    "baseline_window_sigma": 0.01231945855887788,
+    "paired_bootstrap": {
+      "delta": -0.012480716755336352,
+      "se": 0.000810753952739881,
+      "ci95": [
+        -0.014045529456095726,
+        -0.01092494206034887
+      ],
+      "delta_in_se": -15.393963499232688,
+      "n_blocks": 288,
+      "n_boot": 2000
+    }
+  },
+  "summary": "tft_cascade_matched vs tft_cascade [full]: 0.1528 vs 0.1403 (margin -0.0125, -8.9%); windows won 0/3 (need 2); 0/3 checks pass",
+  "note": "Advisory only \u2014 no member is dropped automatically. Read the checks and decide.",
+  "stage": "Stage 1 (screen, seed 42)",
+  "seeds": [
+    42
+  ],
+  "regimes": {
+    "full": {
+      "primary": true,
+      "rows": 96768,
+      "tft_cascade_matched": 0.15278236099287917,
+      "tft_cascade": 0.14030164423754282,
+      "delta": -0.012480716755336352
+    },
+    "late": {
+      "primary": false,
+      "rows": 32256,
+      "tft_cascade_matched": 0.14883894766370767,
+      "tft_cascade": 0.1342939197410781,
+      "delta": -0.0145450279226296
+    }
+  }
+}

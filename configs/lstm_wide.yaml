@@ -1,0 +1,6 @@
+# LSTM variant: wider recurrent cells (hidden 256 vs base 128). Tests whether the vanilla
+# LSTM (CV WAPE 0.170) underfits the 23-channel exog at width 128. Capacity-only lever.
+model: LSTM
+name: lstm_wide
+encoder_hidden_size: 256
+decoder_hidden_size: 256

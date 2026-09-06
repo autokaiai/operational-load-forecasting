@@ -1,0 +1,245 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 934" width="1000" height="934"
+     font-family="ui-sans-serif, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" role="img"
+     aria-labelledby="t d">
+  <title id="t">The graded split, and the inference path of the shipped forecasting system</title>
+  <desc id="d">Top: the split every number is measured under — history up to a cutoff, a 336-hour gap
+    in which no covariates are supplied, then the 336-hour scored block at lead +337 to +672, whose
+    first 224 hours fit the blend weights and whose last 112 are scored. Below: the input directory
+    and the checkpoint feed capacity-weighted cross-series aggregates and then two per-member
+    covariate frames, which feed three models in parallel — a LightGBM booster, a five-seed TFT bag
+    conditioned on a zero-shot Chronos-2 forecast, and a fully fine-tuned Chronos-2. Both Chronos-2
+    weight sets are fetched from Hugging Face at pinned revisions: the same model in two different
+    roles. The convex blend is rescaled by a single amplitude constant and written as CSV. The
+    right-hand rail is the four-rung degradation ladder taken when hosted weights or a GPU are
+    unavailable.</desc>
+
+  <style>
+    :root { color-scheme: light dark; }
+    .bg     { fill: #ffffff; }
+    .box    { fill: #f4f6f8; stroke: #9aa5b1; stroke-width: 1.5; }
+    .member { fill: #eaf1f8; stroke: #5b7fa6; stroke-width: 2; }
+    .ship   { fill: #e7f2ea; stroke: #4b8a63; stroke-width: 2; }
+    .obs    { fill: #eef1f4; stroke: #9aa5b1; stroke-width: 1.5; }
+    .gapb   { fill: #dfe4ea; stroke: #9aa5b1; stroke-width: 1.5; }
+    .scoreb { fill: #e7f2ea; stroke: #4b8a63; stroke-width: 2; }
+    .fitb   { fill: #f4f6f8; stroke: #9aa5b1; stroke-width: 1; }
+    .degr   { fill: none;    stroke: #b08a4a; stroke-width: 1.4; stroke-dasharray: 5 4; }
+    .ttl    { fill: #14202b; font-size: 13.5px; font-weight: 600; }
+    .sub    { fill: #46535f; font-size: 11px; }
+    .num    { fill: #14202b; font-size: 12.5px; font-weight: 700; }
+    .cap    { fill: #5d6975; font-size: 10.5px; }
+    .src    { fill: #5b7fa6; font-size: 10px; font-weight: 600; }
+    .hdr    { fill: #14202b; font-size: 12.5px; font-weight: 700; letter-spacing: .06em; }
+    .amber  { fill: #7d6029; font-size: 10.5px; }
+    .amberb { fill: #7d6029; font-size: 11px; font-weight: 700; }
+    .edge   { stroke: #7c8896; stroke-width: 1.6; fill: none; }
+    .wedge  { stroke: #5b7fa6; stroke-width: 1.6; fill: none; stroke-dasharray: 6 4; }
+    .edgeD  { stroke: #b08a4a; stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; }
+    .rule   { stroke: #d5dbe1; stroke-width: 1; }
+    @media (prefers-color-scheme: dark) {
+      .bg     { fill: #0d1117; }
+      .box    { fill: #161b22; stroke: #6e7681; }
+      .member { fill: #12222f; stroke: #7aa7cf; }
+      .ship   { fill: #10241a; stroke: #6fbf8b; }
+      .obs    { fill: #161b22; stroke: #6e7681; }
+      .gapb   { fill: #21262d; stroke: #6e7681; }
+      .scoreb { fill: #10241a; stroke: #6fbf8b; }
+      .fitb   { fill: #161b22; stroke: #6e7681; }
+      .degr   { stroke: #d4a355; }
+      .ttl, .num, .hdr { fill: #e6edf3; }
+      .sub    { fill: #b6c2ce; }
+      .cap    { fill: #9aa5b1; }
+      .src    { fill: #7aa7cf; }
+      .amber, .amberb { fill: #d4a355; }
+      .edge   { stroke: #7d8794; }
+      .wedge  { stroke: #7aa7cf; }
+      .edgeD  { stroke: #d4a355; }
+      .rule   { stroke: #21262d; }
+    }
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
+            orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7c8896"/></marker>
+    <marker id="aw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
+            orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5b7fa6"/></marker>
+    <marker id="ad" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
+            orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b08a4a"/></marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1000" height="934"/>
+
+  <!-- ============ 1. the split every number is measured under ============ -->
+  <text class="hdr" x="30" y="28">THE SPLIT EVERY NUMBER IS MEASURED UNDER</text>
+  <line class="rule" x1="30" y1="38" x2="790" y2="38"/>
+
+  <text class="cap" x="400" y="58" text-anchor="middle">cutoff c</text>
+  <line class="edge" x1="400" y1="62" x2="400" y2="70"/>
+
+  <rect class="obs"    x="30"  y="70" width="370" height="44"/>
+  <rect class="gapb"   x="400" y="70" width="170" height="44"/>
+  <rect class="scoreb" x="570" y="70" width="220" height="44"/>
+
+  <text class="ttl" x="215" y="89"  text-anchor="middle">observed target &amp; covariates</text>
+  <text class="cap" x="215" y="105" text-anchor="middle">hours [0, c)</text>
+  <text class="ttl" x="485" y="89"  text-anchor="middle">GAP · 336 h</text>
+  <text class="cap" x="485" y="105" text-anchor="middle">no covariates supplied</text>
+  <text class="ttl" x="680" y="89"  text-anchor="middle">SCORED · 336 h</text>
+  <text class="cap" x="680" y="105" text-anchor="middle">lead +337 … +672</text>
+
+  <rect class="fitb"   x="570" y="118" width="147" height="17"/>
+  <rect class="scoreb" x="717" y="118" width="73"  height="17"/>
+  <text class="cap" x="643" y="130" text-anchor="middle" font-size="9.5">blk &lt; 224 · weights fitted</text>
+  <text class="cap" x="753" y="130" text-anchor="middle" font-size="9">≥ 224 · scored</text>
+
+  <line class="edge" x1="400" y1="152" x2="786" y2="152" marker-end="url(#a)"/>
+  <text class="cap" x="593" y="170" text-anchor="middle">the model forecasts all h = 672 steps in one direct pass</text>
+
+  <text class="hdr" x="812" y="28">HORIZON</text>
+  <line class="rule" x1="812" y1="38" x2="972" y2="38"/>
+  <text class="cap" x="812" y="56">h is DERIVED at runtime,</text>
+  <text class="cap" x="812" y="70">never hardcoded:</text>
+  <text class="sub" x="812" y="90">gap = first_forecast</text>
+  <text class="sub" x="812" y="104">    − last_observed − 1</text>
+  <text class="sub" x="812" y="118">h = gap + span</text>
+  <text class="cap" x="812" y="136">shipped h = 672; the same</text>
+  <text class="cap" x="812" y="150">checkpoint serves gap 0 too</text>
+
+  <!-- ============ 2. inputs ============ -->
+  <text class="hdr" x="30" y="204">INPUTS</text>
+  <line class="rule" x1="30" y1="214" x2="790" y2="214"/>
+
+  <rect class="box" rx="6" x="30" y="228" width="222" height="74"/>
+  <text class="ttl" x="44" y="250">--input_dir</text>
+  <text class="sub" x="44" y="268">forecast_index_*.csv · *_input.csv</text>
+  <text class="cap" x="44" y="288">29 known-future covariates, no target</text>
+
+  <rect class="box" rx="6" x="268" y="228" width="230" height="74"/>
+  <text class="ttl" x="282" y="250">--checkpoint · 57 MB</text>
+  <text class="sub" x="282" y="268">5 × TFT · booster · target history [0, c)</text>
+  <text class="cap" x="282" y="288">bundle.json: blend weights, not in code</text>
+
+  <rect class="box" rx="6" x="512" y="228" width="230" height="74"/>
+  <text class="ttl" x="526" y="250">Hugging Face</text>
+  <text class="sub" x="526" y="268">2 × Chronos-2 weight sets</text>
+  <text class="cap" x="526" y="288">public repos, pinned revisions</text>
+
+  <!-- ============ 3. covariate bus ============ -->
+  <text class="hdr" x="30" y="342">COVARIATE BUS — one frame per member, a measured decision</text>
+  <line class="rule" x1="30" y1="352" x2="560" y2="352"/>
+
+  <rect class="box" rx="6" x="30" y="366" width="530" height="54"/>
+  <text class="ttl" x="44" y="388">xs_cap_* — capacity-weighted cross-series aggregates</text>
+  <text class="sub" x="44" y="406">queue_pressure · network_pressure · shock_risk · rebuilt here, never stored</text>
+  <text class="num" x="497" y="388">+0.00693</text>
+
+  <rect class="box" rx="6" x="30" y="446" width="242" height="52"/>
+  <text class="ttl" x="44" y="468">frame A — linear interpolation</text>
+  <text class="sub" x="44" y="486">for the tree: <tspan class="num">+0.0040</tspan> <tspan class="cap">(3/3 windows)</tspan></text>
+
+  <rect class="box" rx="6" x="288" y="446" width="272" height="52"/>
+  <text class="ttl" x="302" y="468">frame B — stored per-series medians</text>
+  <text class="sub" x="302" y="486">interpolation would cost the cascade <tspan class="num">−0.0094</tspan></text>
+
+  <!-- ============ 4. members ============ -->
+  <text class="hdr" x="30" y="530">THREE MEMBERS, IN PARALLEL</text>
+  <line class="rule" x1="30" y1="540" x2="790" y2="540"/>
+
+  <rect class="member" rx="6" x="30" y="578" width="225" height="112"/>
+  <text class="ttl" x="44" y="600">LightGBM</text>
+  <text class="sub" x="44" y="618">lgbm_s24_unitcat · 1181 trees</text>
+  <text class="sub" x="44" y="634">objective regression_l1</text>
+  <text class="cap" x="44" y="654">runs FIRST: no download, no GPU —</text>
+  <text class="cap" x="44" y="668">the one member that cannot fail</text>
+  <text class="src" x="44" y="684">weights ← checkpoint.pt</text>
+
+  <rect class="member" rx="6" x="271" y="578" width="225" height="112"/>
+  <text class="ttl" x="285" y="600">TFT · 5-seed SWA bag</text>
+  <text class="sub" x="285" y="618">conditioned on a ZERO-SHOT</text>
+  <text class="sub" x="285" y="634">Chronos-2 forecast (known-future)</text>
+  <text class="cap" x="285" y="654">that channel is worth <tspan class="num">+11.3% rel.</tspan></text>
+  <text class="cap" x="285" y="668">generated at inference, never shipped</text>
+  <text class="src" x="285" y="684">weights ← checkpoint.pt</text>
+
+  <rect class="member" rx="6" x="512" y="578" width="230" height="112"/>
+  <text class="ttl" x="526" y="600">Chronos-2, fully fine-tuned</text>
+  <text class="sub" x="526" y="618">2000 steps, full model (not LoRA)</text>
+  <text class="sub" x="526" y="634">covariate-conditioned, not target-only</text>
+  <text class="cap" x="526" y="654">455.8 MB — too large for the archive;</text>
+  <text class="cap" x="526" y="668">best single member, largest weight</text>
+  <text class="src" x="526" y="684">weights ← Hugging Face @ pinned rev</text>
+
+  <!-- ============ 5. blend, gamma, output ============ -->
+  <rect class="ship" rx="6" x="110" y="726" width="580" height="56"/>
+  <text class="ttl" x="126" y="748">Convex blend — fitted on blk &lt; 224, scored on blk ≥ 224</text>
+  <text class="num" x="126" y="768">0.4724 fine-tune + 0.3413 bag + 0.1863 tree <tspan class="cap">→  CV far 0.12029</tspan></text>
+
+  <rect class="ship" rx="6" x="110" y="808" width="580" height="56"/>
+  <text class="ttl" x="126" y="830">Amplitude recalibration — applied at EVERY rung</text>
+  <text class="num" x="126" y="850">pred' = unit_mean + 1.04 × (pred − unit_mean), clipped at 0 <tspan class="cap">→  0.11807</tspan></text>
+
+
+
+  <!-- ============ edges: data flow ============ -->
+  <line class="edge" x1="141" y1="302" x2="141" y2="362" marker-end="url(#a)"/>
+  <line class="edge" x1="383" y1="302" x2="383" y2="362" marker-end="url(#a)"/>
+  <line class="edge" x1="141" y1="420" x2="141" y2="442" marker-end="url(#a)"/>
+  <line class="edge" x1="424" y1="420" x2="424" y2="442" marker-end="url(#a)"/>
+  <line class="edge" x1="141" y1="498" x2="141" y2="574" marker-end="url(#a)"/>
+  <line class="edge" x1="330" y1="498" x2="330" y2="574" marker-end="url(#a)"/>
+  <line class="edge" x1="530" y1="498" x2="530" y2="574" marker-end="url(#a)"/>
+  <line class="edge" x1="141" y1="690" x2="141" y2="722" marker-end="url(#a)"/>
+  <line class="edge" x1="383" y1="690" x2="383" y2="722" marker-end="url(#a)"/>
+  <line class="edge" x1="627" y1="690" x2="627" y2="722" marker-end="url(#a)"/>
+  <line class="edge" x1="400" y1="782" x2="400" y2="804" marker-end="url(#a)"/>
+  <line class="edge" x1="400" y1="864" x2="400" y2="884" marker-end="url(#a)"/>
+  <rect class="ship" rx="6" x="160" y="884" width="480" height="34"/>
+  <text class="ttl" x="400" y="906" text-anchor="middle">predictions.csv — series_id, timestamp, prediction</text>
+
+  <!-- ============ edges: model weights (same model, two roles) ============ -->
+  <path class="wedge" d="M627,302 L627,556 L440,556"/>
+  <line class="wedge" x1="440" y1="556" x2="440" y2="574" marker-end="url(#aw)"/>
+  <line class="wedge" x1="627" y1="556" x2="627" y2="574" marker-end="url(#aw)"/>
+  <text class="src" x="452" y="551">zero-shot → covariate channel</text>
+  <text class="src" x="639" y="551">fine-tuned → blend member</text>
+
+  <!-- ============ degradation ladder ============ -->
+  <text class="hdr" x="812" y="204">DEGRADATION LADDER</text>
+  <line class="rule" x1="812" y1="214" x2="972" y2="214"/>
+  <text class="cap" x="812" y="232">Each rung keeps its OWN</text>
+  <text class="cap" x="812" y="246">measured weights — never</text>
+  <text class="cap" x="812" y="260">rung 1's re-spread. Every</text>
+  <text class="cap" x="812" y="274">rung announces itself on</text>
+  <text class="cap" x="812" y="288">stdout AND stderr.</text>
+
+  <rect class="degr" rx="5" x="812" y="308" width="160" height="46"/>
+  <text class="amberb" x="824" y="326">RUNG 1 · all three members</text>
+  <text class="amber"  x="824" y="344">0.11807  —  nominal</text>
+
+  <rect class="degr" rx="5" x="812" y="366" width="160" height="46"/>
+  <text class="amberb" x="824" y="384">RUNG 2 · no fine-tune</text>
+  <text class="amber"  x="824" y="402">0.13163  —  bag + tree</text>
+
+  <rect class="degr" rx="5" x="812" y="424" width="160" height="46"/>
+  <text class="amberb" x="824" y="442">RUNG 3 · cascade blanked</text>
+  <text class="amber"  x="824" y="460">~0.14  —  median, flag = 1</text>
+
+  <rect class="degr" rx="5" x="812" y="482" width="160" height="46"/>
+  <text class="amberb" x="824" y="500">RUNG 4 · tree alone</text>
+  <text class="amber"  x="824" y="518">0.15200  —  no GPU</text>
+
+  <path class="edgeD" d="M812,528 L777,528 L777,754 L694,754" marker-end="url(#ad)"/>
+
+  <!-- ============ legend ============ -->
+  <text class="hdr" x="812" y="600">LEGEND</text>
+  <line class="rule" x1="812" y1="610" x2="972" y2="610"/>
+  <line class="edge"  x1="812" y1="628" x2="846" y2="628" marker-end="url(#a)"/>
+  <text class="cap" x="854" y="632">data flow</text>
+  <line class="wedge" x1="812" y1="652" x2="846" y2="652" marker-end="url(#aw)"/>
+  <text class="cap" x="854" y="656">model weights</text>
+  <line class="edgeD" x1="812" y1="676" x2="846" y2="676" marker-end="url(#ad)"/>
+  <text class="cap" x="854" y="680">degradation path</text>
+  <text class="cap" x="812" y="708">Every number is pooled</text>
+  <text class="cap" x="812" y="722">far-regime WAPE over the</text>
+  <text class="cap" x="812" y="736">blk ≥ 224 rows of three</text>
+  <text class="cap" x="812" y="750">gapped windows.</text>
+</svg>

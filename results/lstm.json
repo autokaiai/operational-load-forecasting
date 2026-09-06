@@ -1,0 +1,68 @@
+{
+  "name": "lstm",
+  "model": "LSTM",
+  "seed": 42,
+  "config": {
+    "seed": 42,
+    "freq": "h",
+    "h": 336,
+    "input_size": 504,
+    "max_steps": 5000,
+    "learning_rate": 0.001,
+    "val_check_steps": 50,
+    "early_stop_patience_steps": 3,
+    "val_size": 504,
+    "accelerator": "gpu",
+    "devices": 1,
+    "batch_size": 32,
+    "windows_batch_size": 128,
+    "inference_windows_batch_size": 128,
+    "valid_batch_size": 64,
+    "local_scaler_type": "robust",
+    "scaler_type": "identity",
+    "enable_progress_bar": true,
+    "model": "LSTM",
+    "name": "lstm"
+  },
+  "versions": {
+    "neuralforecast": "3.1.9",
+    "torch": "2.12.0+cu130"
+  },
+  "cross_validation": {
+    "n_windows": 3,
+    "step_size": 336,
+    "per_fold_wape": [
+      0.16029832076991693,
+      0.1816523183809742,
+      0.16808647424202502
+    ],
+    "cv_wape_mean": 0.17001237113097203,
+    "cv_wape_std": 0.008823457848765107,
+    "cv_metrics_pooled": {
+      "wape": 0.1692567204995351,
+      "mae": 1.786412485200062,
+      "mse": 9.866007179204102,
+      "rmse": 3.141020085768969,
+      "mape": 0.20801466920847475,
+      "smape": 0.18888155489188124
+    }
+  },
+  "gapped_eval": {
+    "gapped_h": 672,
+    "score_len": 336,
+    "gapped_metrics": {
+      "wape": 0.18017994523361042,
+      "mae": 1.9244378078025852,
+      "mse": 10.661293420835298,
+      "rmse": 3.265163613180096,
+      "mape": 0.21409119892901293,
+      "smape": 0.20531523994128886
+    }
+  },
+  "diagnostics_seconds": 119.4,
+  "train_seconds": 93.9,
+  "n_params": 235905,
+  "train_wape": 0.16113802089896376,
+  "train_vs_cv_gap": 0.008874350232008277,
+  "checkpoint": "/outputs/checkpoints/lstm.pt"
+}

@@ -1,0 +1,7 @@
+# LSTM variant: volume-weighted L1. Same vanilla architecture as lstm, but each series' loss
+# is weighted by its robust scale (MAD) so the trained objective is original-scale L1 = the
+# WAPE numerator, instead of the scaler-equalized MAE. Isolates the loss lever (top
+# architecture-agnostic lever per the deep-research verdict) on the base LSTM.
+model: LSTM
+name: lstm_vw
+sample_weight: volume

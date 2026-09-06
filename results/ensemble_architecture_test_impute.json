@@ -1,0 +1,457 @@
+{
+  "windows": [
+    0,
+    1,
+    2
+  ],
+  "cutoffs": [
+    3648,
+    3312,
+    2976
+  ],
+  "members_present": [
+    "bitcn",
+    "chronos_ft",
+    "lgbm",
+    "lstm",
+    "tft"
+  ],
+  "pruned": [
+    "lstm",
+    "bitcn"
+  ],
+  "cut_blk": 224,
+  "per_window": {
+    "0": {
+      "members_present": [
+        "tft",
+        "chronos_ft",
+        "lstm",
+        "bitcn",
+        "lgbm"
+      ],
+      "arm_c": {
+        "standalone": {
+          "tft": {
+            "wape": 0.1502
+          },
+          "chronos_ft": {
+            "wape": 0.1542
+          },
+          "lstm": {
+            "wape": 0.1563
+          },
+          "bitcn": {
+            "wape": 0.1811
+          },
+          "lgbm": {
+            "wape": 0.1516
+          }
+        },
+        "pairs": {
+          "tft+chronos_ft": {
+            "w_tft": 0.55,
+            "wape": 0.1448
+          },
+          "tft+lstm": {
+            "w_tft": 0.65,
+            "wape": 0.1461
+          },
+          "tft+bitcn": {
+            "w_tft": 0.84,
+            "wape": 0.1512
+          },
+          "tft+lgbm": {
+            "w_tft": 0.55,
+            "wape": 0.1392
+          }
+        },
+        "simplex": {
+          "weights": {
+            "tft": 0.45,
+            "chronos_ft": 0.3,
+            "lstm": 0.0,
+            "bitcn": 0.0,
+            "lgbm": 0.25
+          },
+          "wape": 0.1407
+        }
+      },
+      "arm_e": {
+        "wape": 0.1302
+      },
+      "panel_members": [
+        "tft",
+        "chronos_ft",
+        "lgbm"
+      ],
+      "arm_d": {
+        "n_test_rows": 10752,
+        "ridge": {
+          "wape": 0.1247
+        },
+        "mlp": {
+          "wape": 0.1414
+        }
+      },
+      "arm_f": {
+        "n_test_rows": 10752,
+        "lightgbm": {
+          "wape": 0.1225
+        },
+        "catboost": {
+          "wape": 0.1227
+        },
+        "rf": {
+          "wape": 0.1373
+        }
+      }
+    },
+    "1": {
+      "members_present": [
+        "tft",
+        "chronos_ft",
+        "lstm",
+        "bitcn",
+        "lgbm"
+      ],
+      "arm_c": {
+        "standalone": {
+          "tft": {
+            "wape": 0.1546
+          },
+          "chronos_ft": {
+            "wape": 0.1827
+          },
+          "lstm": {
+            "wape": 0.1895
+          },
+          "bitcn": {
+            "wape": 0.1935
+          },
+          "lgbm": {
+            "wape": 0.1864
+          }
+        },
+        "pairs": {
+          "tft+chronos_ft": {
+            "w_tft": 0.79,
+            "wape": 0.1515
+          },
+          "tft+lstm": {
+            "w_tft": 0.92,
+            "wape": 0.1533
+          },
+          "tft+bitcn": {
+            "w_tft": 0.96,
+            "wape": 0.154
+          },
+          "tft+lgbm": {
+            "w_tft": 0.85,
+            "wape": 0.1514
+          }
+        },
+        "simplex": {
+          "weights": {
+            "tft": 0.8,
+            "chronos_ft": 0.2,
+            "lstm": 0.0,
+            "bitcn": 0.0,
+            "lgbm": 0.0
+          },
+          "wape": 0.1515
+        }
+      },
+      "arm_e": {
+        "wape": 0.1714
+      },
+      "panel_members": [
+        "tft",
+        "chronos_ft",
+        "lgbm"
+      ],
+      "arm_d": {
+        "n_test_rows": 10752,
+        "ridge": {
+          "wape": 0.1547
+        },
+        "mlp": {
+          "wape": 0.1702
+        }
+      },
+      "arm_f": {
+        "n_test_rows": 10752,
+        "lightgbm": {
+          "wape": 0.1499
+        },
+        "catboost": {
+          "wape": 0.1499
+        },
+        "rf": {
+          "wape": 0.1743
+        }
+      }
+    },
+    "2": {
+      "members_present": [
+        "tft",
+        "chronos_ft",
+        "lstm",
+        "bitcn",
+        "lgbm"
+      ],
+      "arm_c": {
+        "standalone": {
+          "tft": {
+            "wape": 0.1368
+          },
+          "chronos_ft": {
+            "wape": 0.1515
+          },
+          "lstm": {
+            "wape": 0.1587
+          },
+          "bitcn": {
+            "wape": 0.1712
+          },
+          "lgbm": {
+            "wape": 0.1588
+          }
+        },
+        "pairs": {
+          "tft+chronos_ft": {
+            "w_tft": 0.66,
+            "wape": 0.1346
+          },
+          "tft+lstm": {
+            "w_tft": 0.83,
+            "wape": 0.1363
+          },
+          "tft+bitcn": {
+            "w_tft": 0.89,
+            "wape": 0.1371
+          },
+          "tft+lgbm": {
+            "w_tft": 0.71,
+            "wape": 0.1354
+          }
+        },
+        "simplex": {
+          "weights": {
+            "tft": 0.6,
+            "chronos_ft": 0.3,
+            "lstm": 0.0,
+            "bitcn": 0.0,
+            "lgbm": 0.1
+          },
+          "wape": 0.1345
+        }
+      },
+      "arm_e": {
+        "wape": 0.1679
+      },
+      "panel_members": [
+        "tft",
+        "chronos_ft",
+        "lgbm"
+      ],
+      "arm_d": {
+        "n_test_rows": 10752,
+        "ridge": {
+          "wape": 0.1333
+        },
+        "mlp": {
+          "wape": 0.1419
+        }
+      },
+      "arm_f": {
+        "n_test_rows": 10752,
+        "lightgbm": {
+          "wape": 0.1275
+        },
+        "catboost": {
+          "wape": 0.1269
+        },
+        "rf": {
+          "wape": 0.1453
+        }
+      }
+    }
+  },
+  "decision": {
+    "tft_alone_pooled_wape": 0.1463,
+    "sigma_tft": 0.0076,
+    "tft_per_window_wape": {
+      "0": 0.1502,
+      "1": 0.1546,
+      "2": 0.1368
+    },
+    "strategies": {
+      "standalone_chronos_ft": {
+        "pooled_wape": 0.1602,
+        "delta_vs_tft": 0.0139,
+        "per_window_wape": {
+          "0": 0.1542,
+          "1": 0.1827,
+          "2": 0.1515
+        },
+        "windows_lost": 3,
+        "verdict": "DROP"
+      },
+      "standalone_lstm": {
+        "pooled_wape": 0.1653,
+        "delta_vs_tft": 0.019,
+        "per_window_wape": {
+          "0": 0.1563,
+          "1": 0.1895,
+          "2": 0.1587
+        },
+        "windows_lost": 3,
+        "verdict": "DROP"
+      },
+      "standalone_bitcn": {
+        "pooled_wape": 0.1805,
+        "delta_vs_tft": 0.0342,
+        "per_window_wape": {
+          "0": 0.1811,
+          "1": 0.1935,
+          "2": 0.1712
+        },
+        "windows_lost": 3,
+        "verdict": "DROP"
+      },
+      "standalone_lgbm": {
+        "pooled_wape": 0.1628,
+        "delta_vs_tft": 0.0165,
+        "per_window_wape": {
+          "0": 0.1516,
+          "1": 0.1864,
+          "2": 0.1588
+        },
+        "windows_lost": 3,
+        "verdict": "DROP"
+      },
+      "blend_tft_chronos": {
+        "pooled_wape": 0.1427,
+        "delta_vs_tft": -0.0037,
+        "per_window_wape": {
+          "0": 0.1448,
+          "1": 0.1515,
+          "2": 0.1346
+        },
+        "windows_lost": 0,
+        "verdict": "DROP"
+      },
+      "blend_tft+lstm": {
+        "pooled_wape": 0.1442,
+        "delta_vs_tft": -0.0021,
+        "per_window_wape": {
+          "0": 0.1461,
+          "1": 0.1533,
+          "2": 0.1363
+        },
+        "windows_lost": 0,
+        "verdict": "DROP"
+      },
+      "blend_tft+bitcn": {
+        "pooled_wape": 0.1467,
+        "delta_vs_tft": 0.0004,
+        "per_window_wape": {
+          "0": 0.1512,
+          "1": 0.154,
+          "2": 0.1371
+        },
+        "windows_lost": 2,
+        "verdict": "DROP"
+      },
+      "blend_tft+lgbm": {
+        "pooled_wape": 0.1408,
+        "delta_vs_tft": -0.0055,
+        "per_window_wape": {
+          "0": 0.1392,
+          "1": 0.1514,
+          "2": 0.1354
+        },
+        "windows_lost": 0,
+        "verdict": "DROP"
+      },
+      "blend_simplex": {
+        "pooled_wape": 0.1411,
+        "delta_vs_tft": -0.0053,
+        "per_window_wape": {
+          "0": 0.1407,
+          "1": 0.1515,
+          "2": 0.1345
+        },
+        "windows_lost": 0,
+        "verdict": "DROP"
+      },
+      "residual": {
+        "pooled_wape": 0.1543,
+        "delta_vs_tft": 0.008,
+        "per_window_wape": {
+          "0": 0.1302,
+          "1": 0.1714,
+          "2": 0.1679
+        },
+        "windows_lost": 2,
+        "verdict": "DROP"
+      },
+      "router_ridge": {
+        "pooled_wape": 0.1352,
+        "delta_vs_tft": -0.0111,
+        "per_window_wape": {
+          "0": 0.1247,
+          "1": 0.1547,
+          "2": 0.1333
+        },
+        "windows_lost": 1,
+        "verdict": "KEEP"
+      },
+      "router_mlp": {
+        "pooled_wape": 0.1486,
+        "delta_vs_tft": 0.0023,
+        "per_window_wape": {
+          "0": 0.1414,
+          "1": 0.1702,
+          "2": 0.1419
+        },
+        "windows_lost": 2,
+        "verdict": "DROP"
+      },
+      "stacker_lightgbm": {
+        "pooled_wape": 0.1311,
+        "delta_vs_tft": -0.0152,
+        "per_window_wape": {
+          "0": 0.1225,
+          "1": 0.1499,
+          "2": 0.1275
+        },
+        "windows_lost": 0,
+        "verdict": "KEEP"
+      },
+      "stacker_catboost": {
+        "pooled_wape": 0.1309,
+        "delta_vs_tft": -0.0154,
+        "per_window_wape": {
+          "0": 0.1227,
+          "1": 0.1499,
+          "2": 0.1269
+        },
+        "windows_lost": 0,
+        "verdict": "KEEP"
+      },
+      "stacker_rf": {
+        "pooled_wape": 0.1493,
+        "delta_vs_tft": 0.003,
+        "per_window_wape": {
+          "0": 0.1373,
+          "1": 0.1743,
+          "2": 0.1453
+        },
+        "windows_lost": 2,
+        "verdict": "DROP"
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+# TSMixerx — all-MLP time/feature mixing with future + static covariates.
+# Requires n_series; its built-in RevIN is disabled (revin: false) so the shared
+# local_scaler_type=robust is the single normalizer (no double-normalization).
+model: TSMixerx
+name: tsmixerx
+n_series: 96
+n_block: 2
+ff_dim: 64
+dropout: 0.0
+revin: false
+
+# Batch size: TSMixerx fits 256 windows comfortably on the 24GB L4 (~16.2 GiB at gapped h=672).
+windows_batch_size: 256
+inference_windows_batch_size: 256
+
+# Explicit full training ceiling: this heavy model is slow to converge, so keep the full budget
+# (base.yaml is already 5000) and let early stopping (early_stop_patience_steps: 3) halt it.
+max_steps: 5000

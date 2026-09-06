@@ -1,0 +1,7 @@
+# LSTM variant: learning-rate annealing (num_lr_decays=3 steps the LR down 3x over training)
+# with a longer budget (8k steps). LSTMs are sensitive to LR schedule; the base run uses a
+# flat 1e-3 and early-stops at patience 3, possibly before the cell state fully settles.
+model: LSTM
+name: lstm_sched
+num_lr_decays: 3
+max_steps: 8000

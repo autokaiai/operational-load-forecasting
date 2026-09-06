@@ -1,0 +1,68 @@
+{
+  "candidate": "lgbm_es",
+  "baseline": "lgbm",
+  "regime": "late",
+  "checks": {
+    "pooled_improves": {
+      "pass": true,
+      "candidate_pooled_wape": 0.16199573252909938,
+      "baseline_pooled_wape": 0.16292226484040367,
+      "margin": 0.0009265323113042956,
+      "margin_relative": 0.0056869594356051545
+    },
+    "majority_windows_improve": {
+      "pass": true,
+      "windows_won": [
+        2976,
+        3312
+      ],
+      "windows_required": 2,
+      "windows_total": 3,
+      "per_window_delta": {
+        "2976": 0.0013180380426381921,
+        "3312": 0.002295042862177743,
+        "3648": -0.00032442885890934803
+      }
+    },
+    "orthogonal": {
+      "pass": false,
+      "threshold": 0.95,
+      "err_corr": {
+        "lgbm": 0.9994962204493378
+      }
+    }
+  },
+  "checks_passed": [
+    "pooled_improves",
+    "majority_windows_improve"
+  ],
+  "checks_missed": [
+    "orthogonal"
+  ],
+  "evidence": {
+    "per_window_delta": {
+      "2976": 0.0013180380426381921,
+      "3312": 0.002295042862177743,
+      "3648": -0.00032442885890934803
+    },
+    "per_window_delta_spread": 0.0013237489715235322,
+    "baseline_window_sigma": 0.01559731946976534,
+    "paired_bootstrap": {
+      "delta": 0.0009265323113043233,
+      "se": 0.00016455605920318714,
+      "ci95": [
+        0.0006095957754802081,
+        0.0012567750337154787
+      ],
+      "delta_in_se": 5.630496475126929,
+      "n_blocks": 288,
+      "n_boot": 2000
+    }
+  },
+  "summary": "lgbm_es vs lgbm [late]: 0.1620 vs 0.1629 (margin +0.0009, +0.6%); windows won 2/3 (need 2); 2/3 checks pass",
+  "note": "Advisory only \u2014 no member is dropped automatically. Read the checks and decide.",
+  "stage": "Stage 1 (screen, seed 42)",
+  "seeds": [
+    42
+  ]
+}

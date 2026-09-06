@@ -1,0 +1,10 @@
+# iTransformer — "inverted" transformer that attends across the 96 series (variates) instead of
+# across time. Multivariate -> requires n_series. Covariate-free (no futr/stat), so like PatchTST
+# it isolates the multivariate-attention prior with no covariate help.
+model: iTransformer
+name: itransformer
+n_series: 96
+
+# Attention is over the 96 variates per window; keep the batch conservative on the 24GB L4.
+windows_batch_size: 64
+inference_windows_batch_size: 64

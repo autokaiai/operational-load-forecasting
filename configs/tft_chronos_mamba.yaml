@@ -1,0 +1,38 @@
+# IDEAS #16 — the cascade TFT with its LSTM encoders replaced by a selective state-space (Mamba)
+# stack. src/models/mamba_tft.py.
+#
+# EVERY key below that is shared with configs/tft_chronos.yaml is COPIED FROM IT and must stay
+# copied: the arm sits on the shipped backbone, and the measurement is the encoder and nothing
+# else. The only additions are the `model:` line and the `ssm_*` block.
+#
+# Drive it as a member, never by hand — the cascade covariate is gap-honest for ONE cutoff and
+# src.models.cascade_provenance refuses the wrong frame:
+#   python -m scripts.member_preds_window --member tft_cascade_mamba --window 0 --cut-idx 3648
+model: MambaTFT
+name: tft_cascade_mamba
+
+hidden_size: 64
+n_head: 4
+dropout: 0.1
+grn_activation: ELU              # pinned for the same reason configs/tft_chronos.yaml pins it
+
+# TFT attention is steeply memory-hungry; 32 is its safe ceiling at the gapped h=672 (~20 GiB),
+# and nf_fit_and_sweep halves it again for the gapped fit. Copied from the control, unchanged:
+# the SSM's own footprint is measured in results/mamba/mem_probe.json, not guessed at here.
+windows_batch_size: 32
+inference_windows_batch_size: 32
+
+max_steps: 5000                  # the control's ceiling; both arms early-stop long before it
+
+# --- the lever ------------------------------------------------------------------------------
+# PARAMETER-MATCHED BY ARITHMETIC, NOT BY TUNING. At hidden 64 these settings give 32,768 params
+# per encoder against nn.LSTM(64,64)'s 33,280 — 98%. tests/test_mamba_tft.py asserts the ratio
+# stays inside 0.9-1.1, so a future edit that buys a win with capacity fails the test rather than
+# shipping. Do not "improve" these before the null is measured.
+ssm_mode: "ssm"                  # "lstm" restores the untouched neuralforecast encoder (control)
+ssm_layers: 1                    # matches the TFT's n_rnn_layers default of 1
+ssm_state_size: 16               # N — the diagonal state width per channel
+ssm_expand: 2                    # d_inner = 128
+ssm_conv_width: 4                # causal depthwise conv, Mamba's default
+ssm_chunk: 64                    # scan chunk: 19 sequential hops at L = 504 + 672
+ssm_checkpoint: true             # recompute each chunk in backward; ~10 MB instead of ~1.9 GB

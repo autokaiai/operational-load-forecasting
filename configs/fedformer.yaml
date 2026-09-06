@@ -1,0 +1,7 @@
+# FEDformer — frequency-enhanced decomposition transformer. Future covariates, no static.
+# Cap the batch on the 24GB L4.
+model: FEDformer
+name: fedformer
+
+windows_batch_size: 64
+inference_windows_batch_size: 64

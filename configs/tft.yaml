@@ -1,0 +1,31 @@
+# TFT — Temporal Fusion Transformer: attention + gating + static + future covariates.
+# hidden_size kept modest (64) to curb overfitting on 96 series at vanilla settings.
+model: TFT
+name: tft
+hidden_size: 64
+n_head: 4
+dropout: 0.1
+
+# Batch size: TFT's attention is steeply memory-hungry — wbs=128 (base) OOMs even on 24GB, and 48
+# OOMs at the gapped h=672; 32 is its safe ceiling (~20 GiB at h=672). run_gapped_eval halves this
+# again for the h=672 diagnostic so it keeps headroom.
+windows_batch_size: 32
+inference_windows_batch_size: 32
+
+# Explicit full training ceiling (same anti-underfitting rationale as TSMixerx; early stopping halts).
+max_steps: 5000
+
+# GRN activation: ELU — PINNED EXPLICITLY, and the pin is the point.
+#
+# An early activation sweep measured SELU 0.1372 vs ELU 0.1411 on the gapped far block — single
+# seed 42, on a DIFFERENT harness. SELU was briefly adopted on 2026-08-05 and REVERTED the same
+# day after it was re-measured on OUR cube: seed-averaged
+# over 3 seeds it is -0.00042 against a per-seed std of 0.00657, i.e. UNINFORMATIVE, not negative.
+# We could not reproduce #58's margin at n=3, and every recorded number in this project was fitted
+# at ELU, so ELU is what ships — no discontinuity, nothing to re-measure. The sweep is reported
+# as a cross-harness result we could not confirm, not as a lever we adopted.
+#
+# Written out rather than left to neuralforecast's default so a version bump cannot change the
+# shipped model in silence — the same reason the sweep's own tests tripwire get_activation_fn,
+# which returns F.elu for "GELU" in 3.1.9.
+grn_activation: ELU

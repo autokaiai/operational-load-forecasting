@@ -1,0 +1,49 @@
+# TFT + cascaded Chronos-2 covariate (feature cascading).
+# Identical hyperparameters to configs/tft.yaml — the ONLY difference is the extra known-future
+# covariate `chronos2_forecast`.
+#
+# TWO CORRECTIONS to what this comment used to claim, both of which cost real work:
+#
+# 1. The column is NOT unconditionally "registered in src.data.features". That registration never
+#    reached main, so driving this config FROM THIS REPO trained a PLAIN TFT that silently
+#    ignored the Chronos column. Note what this does and does not mean: the recorded cascade
+#    numbers were NOT produced here — they came from the sibling worktrees this project was built
+#    across, where the registration does exist, so a real cascade did run. The
+#    cached preds differ from plain TFT by up to 9.35 (mean 0.73), which is how we know. The trap
+#    was that main's copy of this config was inert while looking functional.
+#    It is now a scoped opt-in, empty by default, activated per member — restoring it globally
+#    would make every plain member demand a column train.csv does not have.
+# 2. The frame is PER WINDOW: data/derived/train_chronos_cut<CUT>.csv, not train_chronos.csv. A
+#    cascade covariate is gap-honest only for the cutoff it was anchored at; the rolling frame's
+#    scored-block values were forecast from a context 336h past the cutoff. See
+#    src.models.cascade_provenance — run_member refuses a frame whose sidecar does not clear the
+#    window it is being asked to run.
+#
+# So do not drive this config by hand. Run it as a member, which resolves both:
+#   python -m scripts.member_preds_window --member tft_cascade --window 0 --cut-idx 3648
+model: TFT
+name: tft_chronos
+hidden_size: 64
+n_head: 4
+dropout: 0.1
+
+# TFT attention is steeply memory-hungry; 32 is its safe ceiling at the gapped h=672 (~20 GiB).
+windows_batch_size: 32
+inference_windows_batch_size: 32
+
+max_steps: 5000
+
+# GRN activation: ELU — PINNED EXPLICITLY, and the pin is the point.
+#
+# An early activation sweep measured SELU 0.1372 vs ELU 0.1411 on the gapped far block — single
+# seed 42, on a DIFFERENT harness. SELU was briefly adopted on 2026-08-05 and REVERTED the same
+# day after it was re-measured on OUR cube: seed-averaged
+# over 3 seeds it is -0.00042 against a per-seed std of 0.00657, i.e. UNINFORMATIVE, not negative.
+# We could not reproduce #58's margin at n=3, and every recorded number in this project was fitted
+# at ELU, so ELU is what ships — no discontinuity, nothing to re-measure. The sweep is reported
+# as a cross-harness result we could not confirm, not as a lever we adopted.
+#
+# Written out rather than left to neuralforecast's default so a version bump cannot change the
+# shipped model in silence — the same reason the sweep's own tests tripwire get_activation_fn,
+# which returns F.elu for "GELU" in 3.1.9.
+grn_activation: ELU

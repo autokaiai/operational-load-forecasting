@@ -1,0 +1,84 @@
+{
+  "candidate": "lgbm_s24_wlag",
+  "baseline": "lgbm_stride24",
+  "regime": "full",
+  "checks": {
+    "pooled_improves": {
+      "pass": true,
+      "candidate_pooled_wape": 0.1618361631353109,
+      "baseline_pooled_wape": 0.16204227821478,
+      "margin": 0.00020611507946910468,
+      "margin_relative": 0.0012719833474317615
+    },
+    "majority_windows_improve": {
+      "pass": true,
+      "windows_won": [
+        2976,
+        3648
+      ],
+      "windows_required": 2,
+      "windows_total": 3,
+      "per_window_delta": {
+        "2976": 0.0011849445251162216,
+        "3312": -0.0009084329625898835,
+        "3648": 0.0001231659262538598
+      }
+    },
+    "orthogonal": {
+      "pass": false,
+      "threshold": 0.95,
+      "err_corr": {
+        "lgbm_stride24": 0.9927359674763628
+      }
+    }
+  },
+  "checks_passed": [
+    "pooled_improves",
+    "majority_windows_improve"
+  ],
+  "checks_missed": [
+    "orthogonal"
+  ],
+  "evidence": {
+    "per_window_delta": {
+      "2976": 0.0011849445251162216,
+      "3312": -0.0009084329625898835,
+      "3648": 0.0001231659262538598
+    },
+    "per_window_delta_spread": 0.0010467250010151097,
+    "baseline_window_sigma": 0.00800842020335607,
+    "paired_bootstrap": {
+      "delta": 0.00020611507946910468,
+      "se": 0.00028910545047134567,
+      "ci95": [
+        -0.00036442315766231496,
+        0.0007675589078226802
+      ],
+      "delta_in_se": 0.7129408287981535,
+      "n_blocks": 288,
+      "n_boot": 2000
+    }
+  },
+  "summary": "lgbm_s24_wlag vs lgbm_stride24 [full]: 0.1618 vs 0.1620 (margin +0.0002, +0.1%); windows won 2/3 (need 2); 2/3 checks pass",
+  "note": "Advisory only \u2014 no member is dropped automatically. Read the checks and decide.",
+  "stage": "Stage 1 (screen, seed 42)",
+  "seeds": [
+    42
+  ],
+  "regimes": {
+    "full": {
+      "primary": true,
+      "rows": 96768,
+      "lgbm_s24_wlag": 0.1618361631353109,
+      "lgbm_stride24": 0.16204227821478,
+      "delta": 0.00020611507946910468
+    },
+    "late": {
+      "primary": false,
+      "rows": 32256,
+      "lgbm_s24_wlag": 0.15874782024176307,
+      "lgbm_stride24": 0.15869317408016734,
+      "delta": -5.464616159575608e-05
+    }
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "candidate": "lgbm_s24_recency",
+  "baseline": "lgbm_stride24",
+  "regime": "full",
+  "checks": {
+    "pooled_improves": {
+      "pass": false,
+      "candidate_pooled_wape": 0.1656141153307552,
+      "baseline_pooled_wape": 0.16204227821478,
+      "margin": -0.003571837115975196,
+      "margin_relative": -0.0220426246491109
+    },
+    "majority_windows_improve": {
+      "pass": false,
+      "windows_won": [],
+      "windows_required": 2,
+      "windows_total": 3,
+      "per_window_delta": {
+        "2976": -0.0028285989360911368,
+        "3312": -0.0046090578664057524,
+        "3648": -0.0034670000795541944
+      }
+    },
+    "orthogonal": {
+      "pass": false,
+      "threshold": 0.95,
+      "err_corr": {
+        "lgbm_stride24": 0.9933809362673014
+      }
+    }
+  },
+  "checks_passed": [],
+  "checks_missed": [
+    "pooled_improves",
+    "majority_windows_improve",
+    "orthogonal"
+  ],
+  "evidence": {
+    "per_window_delta": {
+      "2976": -0.0028285989360911368,
+      "3312": -0.0046090578664057524,
+      "3648": -0.0034670000795541944
+    },
+    "per_window_delta_spread": 0.0009020242061626621,
+    "baseline_window_sigma": 0.00800842020335607,
+    "paired_bootstrap": {
+      "delta": -0.003571837115975196,
+      "se": 0.0003544144341075724,
+      "ci95": [
+        -0.0042815384079581496,
+        -0.0028893686657554553
+      ],
+      "delta_in_se": -10.078136701653259,
+      "n_blocks": 288,
+      "n_boot": 2000
+    }
+  },
+  "summary": "lgbm_s24_recency vs lgbm_stride24 [full]: 0.1656 vs 0.1620 (margin -0.0036, -2.2%); windows won 0/3 (need 2); 0/3 checks pass",
+  "note": "Advisory only \u2014 no member is dropped automatically. Read the checks and decide.",
+  "stage": "Stage 1 (screen, seed 42)",
+  "seeds": [
+    42
+  ],
+  "regimes": {
+    "full": {
+      "primary": true,
+      "rows": 96768,
+      "lgbm_s24_recency": 0.1656141153307552,
+      "lgbm_stride24": 0.16204227821478,
+      "delta": -0.003571837115975196
+    },
+    "late": {
+      "primary": false,
+      "rows": 32256,
+      "lgbm_s24_recency": 0.16128771879684578,
+      "lgbm_stride24": 0.15869317408016734,
+      "delta": -0.002594544716678443
+    }
+  }
+}

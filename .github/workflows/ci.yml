@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:   # so a red run can be re-checked without an empty push
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      # THE CPU WHEEL, AND IT IS NOT AN OPTIMISATION. `torch>=2.2` from PyPI resolves to the CUDA
+      # build, which drags nvidia-nccl-cu12 (342 MB), cudnn, cublas and triton past the runner's
+      # ~14 GB disk budget: the install dies with `OSError: [Errno 28] No space left on device`
+      # before a single test runs. Nothing in this suite needs a GPU — every neural test forces
+      # `accelerator: "cpu"` — so the CPU index is both smaller and sufficient.
+      - name: Install CPU torch
+        run: |
+          python -m pip install --upgrade pip
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Install the project
+        run: pip install -e ".[dev]"
+
+      # The forecasting stack is pinned in pyproject.toml and every recorded number in results/ was
+      # produced against those pins. Print what actually resolved, so a future red run shows at a
+      # glance whether it is a code defect or environment drift.
+      - name: Record the resolved stack
+        run: pip list | grep -Ei "^(torch|neuralforecast|pytorch-lightning|utilsforecast|lightgbm|catboost|scikit-learn|xgboost|pandas|numpy|ruff) "
+
+      - name: Ruff lint
+        run: ruff check .
+
+      - name: Ruff format check
+        run: ruff format --check .
+
+      # No `|| exit 5` escape hatch: it was added when the suite was empty and would now turn a
+      # collection error (0 tests collected) into a green run.
+      #
+      # THE WHOLE SUITE RUNS HERE. No test needs a GPU, none needs network (the one `resolve_source`
+      # call asserts it returns `None` offline), and none needs the shipped checkpoint —
+      # test_predict.py trains a tiny model and writes its own. The handful that need the dataset
+      # skip cleanly, because `data/` is not in git.
+      - name: Pytest
+        run: pytest -q

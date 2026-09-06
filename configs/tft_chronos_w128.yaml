@@ -1,0 +1,22 @@
+# The SHIPPED cascade backbone at hidden_size 128 — the 2026-08-17 question: "have we ever tested making
+# the tft even wider to improve its performance?"
+#
+# WE HAVE NOT, AND "S5 swept it" OVERSTATES THE EVIDENCE. S5's ledger (results/s5_sweep.json, 32
+# trials, 21 completed, 11 OOM deaths) covers hidden_size like this:
+#     32 -> 17 trials | 64 -> 1 | 128 -> 1 | 192 -> 2
+# TPE concentrated on 32 after early W1 luck, so width 128 was tried EXACTLY ONCE, scoring 0.16219
+# against the incumbent's 0.16249 on the search window — a 0.0003 difference at a single seed
+# against a measured cross-seed sigma of 0.0055. That is one draw, not a test of width.
+#
+# Byte-identical to configs/tft_chronos.yaml except hidden_size, so the A/B isolates capacity.
+# windows_batch_size stays 32 (the runner halves it to 16 at h=672); S5 ran a 128-wide trial on an
+# L4 without OOM, so this fits.
+model: TFT
+name: tft_chronos_w128
+hidden_size: 128
+n_head: 4
+dropout: 0.1
+windows_batch_size: 32
+inference_windows_batch_size: 32
+max_steps: 5000
+grn_activation: ELU

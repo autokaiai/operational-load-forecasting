@@ -1,0 +1,19 @@
+# LSTM "all levers combined": the winning knobs from the sweep stacked into one model —
+#   wide   (lstm_wide):   encoder/decoder hidden 256
+#   drop   (lstm_drop):   encoder dropout 0.2
+#   sched  (lstm_sched):  num_lr_decays 3 over an 8k-step budget
+#   L1     (lstm_vw):     volume-weighted L1 (per-series MAD sample_weight) — aligns the loss
+#                         with the volume-dominated WAPE, which helped most on the far horizon.
+# batch_size/windows_batch_size are dropped from the base 32/128 so the volume-weighted FINAL
+# fit (full data + the extra sample_weight channel) stays within the 24GB L4 — the base sizes
+# OOM'd there. Diagnostic-only memory note; does not change which levers are tested.
+model: LSTM
+name: lstm_combo
+encoder_hidden_size: 256
+decoder_hidden_size: 256
+encoder_dropout: 0.2
+num_lr_decays: 3
+max_steps: 8000
+sample_weight: volume
+batch_size: 16
+windows_batch_size: 64

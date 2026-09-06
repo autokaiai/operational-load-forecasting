@@ -1,0 +1,65 @@
+# THE SHIPPED MODEL, exactly. Every value below is transcribed from `bundle.json` inside the
+# graded `checkpoint.pt` — not from another config, and not from any plan document.
+#
+# WHY THIS FILE EXISTS, AND IT IS THE W1 FINDING IN ONE PLACE. `configs/tft_chronos_swa.yaml` is
+# the config the CV *members* were driven from, and it is NOT what shipped. The submission path
+# (`scripts/submission_cascade.py`) mirrors `src/eval/cv.py`, which HALVES the batch axes to fit
+# h=672 in memory:
+#
+#     tft_chronos_swa.yaml     windows_batch_size 32   inference_windows_batch_size 32
+#                              batch_size          — (inherits base.yaml's 32)
+#     bundle.json (shipped)    windows_batch_size 16   inference_windows_batch_size 16
+#                              batch_size         16
+#
+# Driving `tft_chronos_swa.yaml` by hand therefore trains a DIFFERENT OBJECT from the one every
+# reported number describes, with no error and a plausible score at the end of it. `batch_size` is
+# the one axis this project never swept, so the difference was invisible until the bundle was read
+# back. This file is the artifact of record; read it, do not re-derive it.
+#
+# It is a TRANSCRIPT, not an entry point. The cascade covariate is a per-window frame with a
+# provenance sidecar, and only the member path resolves it:
+#   python -m scripts.member_preds_window --member tft_cascade_swa --window 0 --cut-idx 3648
+# The shipped 5-seed bag is built by `python -m scripts.submission_cascade`.
+
+model: TFT
+name: tft_chronos_swa
+seed: 42
+freq: h
+
+# The GAPPED geometry: 336h unobserved gap + 336h scored = 672. Only the last 336 are ever scored.
+h: 672
+input_size: 504
+
+# Architecture
+hidden_size: 64
+n_head: 4
+dropout: 0.1
+grn_activation: ELU
+
+# Optimisation
+max_steps: 5000
+learning_rate: 0.001
+val_check_steps: 50
+early_stop_patience_steps: 3
+val_size: 504
+
+# Memory. ALL THREE at 16 — this is the line that differs from tft_chronos_swa.yaml.
+batch_size: 16
+windows_batch_size: 16
+inference_windows_batch_size: 16
+valid_batch_size: 64
+
+# Scaling: per-series robust (RevIN-like), model-internal temporal scaler off.
+local_scaler_type: robust
+scaler_type: identity
+
+accelerator: gpu
+devices: 1
+enable_progress_bar: true
+
+# Checkpoint averaging over the last 25% of whatever the run actually took (src/models/swa.py).
+# Step-based, because Lightning's own callback is epoch-based and cannot initialise under
+# neuralforecast's step-based training.
+swa:
+  every_n_steps: 50
+  tail_fraction: 0.25

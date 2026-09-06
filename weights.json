@@ -1,0 +1,85 @@
+{
+  "_comment": [
+    "THE SHIPPED MODEL, IN TRACKED FORM. predict.py contains no literal blend weights: they",
+    "travel inside bundle.json in the 57 MB checkpoint, which is not in git. Without this file a",
+    "clone of this repo carries no record anywhere of the mixture that produced the reported",
+    "numbers. Read from the graded checkpoint, not transcribed from any document.",
+    "This file is DOCUMENTATION. predict.py reads its weights from the checkpoint, never from",
+    "here, so editing this changes nothing at inference \u2014 it only makes the record wrong."
+  ],
+  "version": "v-prod-1.1",
+  "checkpoint": {
+    "filename": "checkpoint.pt",
+    "sha256": "13e2f2d87dafd96ae3a7a14aaa5dc6ebc5e9a3fd7b0d1141bba7ce8328e0d295",
+    "bytes": 57177214,
+    "format": "zip; bundle.json + nf/TFT_{0..4}.ckpt + nf/dataset.pkl + tree.json",
+    "read_the_weights_with": "unzip -p checkpoint.pt bundle.json"
+  },
+  "blend": {
+    "rung_1": {
+      "members": {
+        "chronos_full_ft": 0.4723535251605685,
+        "cascade_bag": 0.3413176080096898,
+        "tree": 0.1863288668297417
+      },
+      "sums_to": 1.0,
+      "fit": "convex simplex fit on blk < 224, scored on blk >= 224, pooled over the three gapped CV windows; every member carrying the A9 cross-series aggregates",
+      "cv_pooled_wape_far": 0.12029,
+      "cv_pooled_wape_far_after_gamma": 0.11807
+    },
+    "rung_2": {
+      "_comment": "The fallback when the fine-tuned Chronos-2 cannot be fetched. ITS OWN measured weights, not rung 1's re-spread over two members.",
+      "members": {
+        "cascade_bag": 0.7562,
+        "tree": 0.2438
+      },
+      "cv_pooled_wape_far": 0.13163
+    },
+    "rung_3": {
+      "_comment": "Rung 2's members and weights with the cascade channel blanked to its stored per-series median and *_missing = 1. Chosen inside attach_cascade_channels."
+    },
+    "rung_4": {
+      "_comment": "Tree alone, when the neural bag produces nothing.",
+      "members": {
+        "tree": 1.0
+      },
+      "cv_pooled_wape_far": 0.152
+    }
+  },
+  "desmoothing": {
+    "gamma": 1.04,
+    "applied": "pred' = unit_mean + gamma * (pred - unit_mean), every rung",
+    "effect_on_rung_1_cv": -0.00222,
+    "_comment": "Blending shrinks variance; gamma expands it back. 1.04 rather than our own frame's optimum of 1.06 \u2014 see the block that applies it in predict.py."
+  },
+  "members": {
+    "chronos_full_ft": {
+      "what": "amazon/chronos-2, fully fine-tuned on this dataset",
+      "weights": "hosted on Hugging Face, fetched at inference",
+      "repo": "autokai/chronos2-fullft-dlam-g100",
+      "revision": "ff0fda7e0c5f67581c693975763a988b8c8ed4e3"
+    },
+    "cascade_bag": {
+      "what": "5-seed bag of the SWA TFT, trained on a zero-shot Chronos-2 forecast as a known-future covariate",
+      "config": "configs/tft_chronos_swa_shipped.yaml",
+      "seeds": [
+        892,
+        7739,
+        6545,
+        4388,
+        4330
+      ],
+      "weights": "nf/TFT_{0..4}.ckpt inside checkpoint.pt"
+    },
+    "tree": {
+      "what": "LightGBM, direct multi-horizon, L1 objective",
+      "weights": "tree.json inside checkpoint.pt"
+    }
+  },
+  "zero_shot_covariate": {
+    "repo": "amazon/chronos-2",
+    "used_for": "the chronos2_forecast known-future channel the cascade bag conditions on"
+  },
+  "training_config_of_record": "configs/tft_chronos_swa_shipped.yaml",
+  "caveat": "Every CV number here is pooled FAR-regime WAPE over the blk >= 224 rows of the scored block -- its final 112 hours -- across three gapped windows (cutoffs 3648 / 3312 / 2976): 96 series x 112 hours x 3 = 32,256 rows, self-scored against labels carved from the public 4320 hours. Blend weights are fitted on blk < 224, so this is the held-out half. The public leaderboard scores the NEAR block (gap 0) and is not comparable; see docs/results.md."
+}

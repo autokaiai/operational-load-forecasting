@@ -1,0 +1,84 @@
+{
+  "candidate": "lgbm_cascade",
+  "baseline": "lgbm_s24_unitcat",
+  "regime": "full",
+  "checks": {
+    "pooled_improves": {
+      "pass": true,
+      "candidate_pooled_wape": 0.15781614733160135,
+      "baseline_pooled_wape": 0.15847659493047708,
+      "margin": 0.0006604475988757352,
+      "margin_relative": 0.0041674772174747346
+    },
+    "majority_windows_improve": {
+      "pass": true,
+      "windows_won": [
+        2976,
+        3648
+      ],
+      "windows_required": 2,
+      "windows_total": 3,
+      "per_window_delta": {
+        "2976": 0.0025675055838055016,
+        "3312": -0.0012721582223526873,
+        "3648": 0.0002888748733109736
+      }
+    },
+    "orthogonal": {
+      "pass": false,
+      "threshold": 0.95,
+      "err_corr": {
+        "lgbm_s24_unitcat": 0.9728958377442252
+      }
+    }
+  },
+  "checks_passed": [
+    "pooled_improves",
+    "majority_windows_improve"
+  ],
+  "checks_missed": [
+    "orthogonal"
+  ],
+  "evidence": {
+    "per_window_delta": {
+      "2976": 0.0025675055838055016,
+      "3312": -0.0012721582223526873,
+      "3648": 0.0002888748733109736
+    },
+    "per_window_delta_spread": 0.001930975590424318,
+    "baseline_window_sigma": 0.006887357031483778,
+    "paired_bootstrap": {
+      "delta": 0.000660447598875763,
+      "se": 0.0005415554457590892,
+      "ci95": [
+        -0.0003818935072656383,
+        0.0016999653050558772
+      ],
+      "delta_in_se": 1.2195382837486282,
+      "n_blocks": 288,
+      "n_boot": 2000
+    }
+  },
+  "summary": "lgbm_cascade vs lgbm_s24_unitcat [full]: 0.1578 vs 0.1585 (margin +0.0007, +0.4%); windows won 2/3 (need 2); 2/3 checks pass",
+  "note": "Advisory only \u2014 no member is dropped automatically. Read the checks and decide.",
+  "stage": "Stage 1 (screen, seed 42)",
+  "seeds": [
+    42
+  ],
+  "regimes": {
+    "full": {
+      "primary": true,
+      "rows": 96768,
+      "lgbm_cascade": 0.15781614733160135,
+      "lgbm_s24_unitcat": 0.15847659493047708,
+      "delta": 0.000660447598875763
+    },
+    "late": {
+      "primary": false,
+      "rows": 32256,
+      "lgbm_cascade": 0.15423456106613997,
+      "lgbm_s24_unitcat": 0.15600266717170502,
+      "delta": 0.0017681061055650205
+    }
+  }
+}

@@ -1,0 +1,8 @@
+# BiTCN at 2x the TFT's width — the second rung of the 2026-08-17 capacity probe.
+# bitcn 16 -> bitcn_wide 64 bought +9.4% relative (0.18250 -> 0.16540, 3/3 windows). This asks
+# whether that curve is still climbing at 128 or has turned over. Identical to bitcn_wide except
+# hidden_size, so the A/B isolates width alone.
+model: BiTCN
+name: bitcn_wider
+hidden_size: 128
+dropout: 0.1

@@ -1,0 +1,38 @@
+{
+  "members": [
+    "tft",
+    "lstm",
+    "bitcn"
+  ],
+  "gapped_h": 672,
+  "score_len": 336,
+  "split": "single gapped (+337h offset) \u2014 feasibility read, not full CV",
+  "leader": "tft",
+  "standalone_wape": {
+    "tft": 0.13577755892425203,
+    "lstm": 0.18017994523361042,
+    "bitcn": 0.18537170676812822
+  },
+  "best_pair_blends": {
+    "tft+lstm": {
+      "w_tft": 1.0,
+      "wape": 0.13577755892425203
+    },
+    "tft+bitcn": {
+      "w_tft": 1.0,
+      "wape": 0.13577755892425203
+    },
+    "lstm+bitcn": {
+      "w_lstm": 0.7,
+      "wape": 0.17916067478448186
+    }
+  },
+  "best_full_blend": {
+    "weights": {
+      "tft": 1.0,
+      "lstm": 0.0,
+      "bitcn": 0.0
+    },
+    "wape": 0.13577755892425203
+  }
+}

@@ -1,0 +1,44 @@
+# SPRINT 2 — the SWA cascade TFT with the PER-SERIES SCALER TURNED OFF.
+#
+# THE QUESTION (2026-09-04): the shipped submission and the CV protocol have never trained the
+# same object. `registry.build_nf` passes `local_scaler_type="robust"`; `scripts/submission_cascade.py`
+# constructs `NeuralForecast(models=..., freq="h")` with no scaler at all. So every neural number on
+# record describes a robust-scaled model, while `v-final-3`'s bag — and the A9 bag about to replace
+# it — is a raw-target model. `1.5 / 3.463` (the median per-series MAD) `= 0.433`, exactly the CV
+# loss band, is how the split was noticed.
+#
+# WHICH IS BETTER IS NOT OBVIOUS, WHICH IS WHY THIS RUNS. Raw L1 minimises the pooled-WAPE numerator
+# EXACTLY, so the unscaled arm optimises the metric itself; scaled L1 weights a series by 1/MAD and
+# is misaligned by the 2.23x spread. But scaling is not only a loss reweighting — it divides out the
+# per-series level so a shared model does not have to learn it, and that benefit is unmeasured here.
+# Argument alone cannot settle it.
+#
+# EVERY other key is COPIED from configs/tft_chronos_swa.yaml and must stay copied: the arm is
+# paired against `gapcov__xsA9_s892` at the SAME seed with the SAME A9 block, so the scaler is the
+# only thing that moves.
+#   python -m scripts.member_preds_window --member tft_cascade_swa_noscale --window 0 \
+#       --cut-idx 3648 --seed 892 --xs-block A9
+model: TFT
+name: tft_chronos_swa_noscale
+hidden_size: 64
+n_head: 4
+dropout: 0.1
+
+windows_batch_size: 32
+inference_windows_batch_size: 32
+
+max_steps: 5000
+
+grn_activation: ELU
+
+# --- the lever ------------------------------------------------------------------------------
+# Consumed by registry.build_model, which turns it into a Lightning callback on
+# trainer_kwargs["callbacks"]; it is in _NON_MODEL_KEYS and never reaches the model constructor.
+# No LR schedule of its own: `num_lr_decays` stays at the incumbent's default so this arm measures
+# averaging alone. The two levers are opposed in intent (averaging wants a late trajectory that
+# still moves; decay flattens it), so a combined arm would be unattributable.
+swa:
+  every_n_steps: 50
+  tail_fraction: 0.25
+
+local_scaler_type: null

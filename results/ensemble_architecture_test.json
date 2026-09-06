@@ -1,0 +1,222 @@
+{
+  "windows": [
+    0
+  ],
+  "cutoffs": [
+    3648
+  ],
+  "members_present": [
+    "bitcn",
+    "lgbm",
+    "lstm",
+    "tft"
+  ],
+  "pruned": [
+    "lstm",
+    "bitcn"
+  ],
+  "cut_blk": 224,
+  "per_window": {
+    "0": {
+      "members_present": [
+        "tft",
+        "lstm",
+        "bitcn",
+        "lgbm"
+      ],
+      "arm_c": {
+        "standalone": {
+          "tft": {
+            "wape": 0.1502
+          },
+          "lstm": {
+            "wape": 0.1563
+          },
+          "bitcn": {
+            "wape": 0.1811
+          },
+          "lgbm": {
+            "wape": 0.1516
+          }
+        },
+        "pairs": {
+          "tft+lstm": {
+            "w_tft": 0.65,
+            "wape": 0.1461
+          },
+          "tft+bitcn": {
+            "w_tft": 0.84,
+            "wape": 0.1512
+          },
+          "tft+lgbm": {
+            "w_tft": 0.55,
+            "wape": 0.1392
+          }
+        },
+        "simplex": {
+          "weights": {
+            "tft": 0.55,
+            "lstm": 0.0,
+            "bitcn": 0.0,
+            "lgbm": 0.45
+          },
+          "wape": 0.1392
+        }
+      },
+      "arm_e": {
+        "wape": 0.1302
+      },
+      "panel_members": [
+        "tft",
+        "lgbm"
+      ],
+      "arm_d": {
+        "n_test_rows": 10752,
+        "ridge": {
+          "wape": 0.1246
+        },
+        "mlp": {
+          "wape": 0.1319
+        }
+      },
+      "arm_f": {
+        "n_test_rows": 10752,
+        "lightgbm": {
+          "wape": 0.1236
+        },
+        "catboost": {
+          "wape": 0.1227
+        },
+        "rf": {
+          "wape": 0.1373
+        }
+      }
+    }
+  },
+  "decision": {
+    "tft_alone_pooled_wape": 0.1502,
+    "sigma_tft": 0.0,
+    "tft_per_window_wape": {
+      "0": 0.1502
+    },
+    "strategies": {
+      "standalone_lstm": {
+        "pooled_wape": 0.1563,
+        "delta_vs_tft": 0.0061,
+        "per_window_wape": {
+          "0": 0.1563
+        },
+        "windows_lost": 1,
+        "verdict": "DROP"
+      },
+      "standalone_bitcn": {
+        "pooled_wape": 0.1811,
+        "delta_vs_tft": 0.031,
+        "per_window_wape": {
+          "0": 0.1811
+        },
+        "windows_lost": 1,
+        "verdict": "DROP"
+      },
+      "standalone_lgbm": {
+        "pooled_wape": 0.1516,
+        "delta_vs_tft": 0.0014,
+        "per_window_wape": {
+          "0": 0.1516
+        },
+        "windows_lost": 1,
+        "verdict": "DROP"
+      },
+      "blend_tft+lstm": {
+        "pooled_wape": 0.1461,
+        "delta_vs_tft": -0.0041,
+        "per_window_wape": {
+          "0": 0.1461
+        },
+        "windows_lost": 0,
+        "verdict": "KEEP"
+      },
+      "blend_tft+bitcn": {
+        "pooled_wape": 0.1512,
+        "delta_vs_tft": 0.001,
+        "per_window_wape": {
+          "0": 0.1512
+        },
+        "windows_lost": 1,
+        "verdict": "DROP"
+      },
+      "blend_tft+lgbm": {
+        "pooled_wape": 0.1392,
+        "delta_vs_tft": -0.0109,
+        "per_window_wape": {
+          "0": 0.1392
+        },
+        "windows_lost": 0,
+        "verdict": "KEEP"
+      },
+      "blend_simplex": {
+        "pooled_wape": 0.1392,
+        "delta_vs_tft": -0.0109,
+        "per_window_wape": {
+          "0": 0.1392
+        },
+        "windows_lost": 0,
+        "verdict": "KEEP"
+      },
+      "residual": {
+        "pooled_wape": 0.1302,
+        "delta_vs_tft": -0.02,
+        "per_window_wape": {
+          "0": 0.1302
+        },
+        "windows_lost": 0,
+        "verdict": "KEEP"
+      },
+      "router_ridge": {
+        "pooled_wape": 0.1246,
+        "delta_vs_tft": -0.0255,
+        "per_window_wape": {
+          "0": 0.1246
+        },
+        "windows_lost": 0,
+        "verdict": "KEEP"
+      },
+      "router_mlp": {
+        "pooled_wape": 0.1319,
+        "delta_vs_tft": -0.0182,
+        "per_window_wape": {
+          "0": 0.1319
+        },
+        "windows_lost": 0,
+        "verdict": "KEEP"
+      },
+      "stacker_lightgbm": {
+        "pooled_wape": 0.1236,
+        "delta_vs_tft": -0.0266,
+        "per_window_wape": {
+          "0": 0.1236
+        },
+        "windows_lost": 0,
+        "verdict": "KEEP"
+      },
+      "stacker_catboost": {
+        "pooled_wape": 0.1227,
+        "delta_vs_tft": -0.0274,
+        "per_window_wape": {
+          "0": 0.1227
+        },
+        "windows_lost": 0,
+        "verdict": "KEEP"
+      },
+      "stacker_rf": {
+        "pooled_wape": 0.1373,
+        "delta_vs_tft": -0.0128,
+        "per_window_wape": {
+          "0": 0.1373
+        },
+        "windows_lost": 0,
+        "verdict": "KEEP"
+      }
+    }
+  }
+}

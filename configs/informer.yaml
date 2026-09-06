@@ -1,0 +1,7 @@
+# Informer — ProbSparse-attention long-sequence transformer. Takes future covariates but not
+# static (capability-aware registry omits the static list). Cap the batch on the 24GB L4.
+model: Informer
+name: informer
+
+windows_batch_size: 64
+inference_windows_batch_size: 64

@@ -1,0 +1,36 @@
+{
+  "name": "itransformer",
+  "model": "iTransformer",
+  "seed": 42,
+  "config": {
+    "seed": 42,
+    "freq": "h",
+    "h": 336,
+    "input_size": 504,
+    "max_steps": 5000,
+    "learning_rate": 0.001,
+    "val_check_steps": 50,
+    "early_stop_patience_steps": 3,
+    "val_size": 504,
+    "accelerator": "gpu",
+    "devices": 1,
+    "batch_size": 32,
+    "windows_batch_size": 64,
+    "inference_windows_batch_size": 64,
+    "valid_batch_size": 64,
+    "local_scaler_type": "robust",
+    "scaler_type": "identity",
+    "enable_progress_bar": true,
+    "model": "iTransformer",
+    "name": "itransformer",
+    "n_series": 96
+  },
+  "versions": {
+    "neuralforecast": "3.1.9",
+    "torch": "2.12.0+cu130"
+  },
+  "train_seconds": 38.2,
+  "n_params": 6736720,
+  "train_wape": null,
+  "checkpoint": "/outputs/checkpoints/itransformer.pt"
+}

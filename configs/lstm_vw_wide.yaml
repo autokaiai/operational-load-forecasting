@@ -1,0 +1,8 @@
+# LSTM variant: volume-weighted L1 + wider cells (hidden 256). Tests whether extra capacity
+# pays off once the loss is aligned with WAPE — combines the two most promising single levers
+# (loss alignment + capacity) to probe for a compounding gain.
+model: LSTM
+name: lstm_vw_wide
+sample_weight: volume
+encoder_hidden_size: 256
+decoder_hidden_size: 256

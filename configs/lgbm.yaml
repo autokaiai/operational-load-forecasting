@@ -1,0 +1,19 @@
+# Direct-multistep LightGBM member (src.models.lgbm). NOT a neuralforecast model — its own
+# trainer. MAE objective aligns with the WAPE metric. Keys here override src.models.lgbm.DEFAULT_PARAMS;
+# `origin_stride` / `num_boost_round` are passed through by the member runner.
+model: LGBM
+name: lgbm
+seed: 42
+
+objective: regression_l1
+learning_rate: 0.03
+num_leaves: 63
+max_depth: -1
+min_child_samples: 200
+feature_fraction: 0.8
+bagging_fraction: 0.8
+bagging_freq: 1
+lambda_l2: 1.0
+num_boost_round: 600
+
+origin_stride: 168

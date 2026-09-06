@@ -1,0 +1,36 @@
+# Shared defaults for the Sprint-1 POC. Per-model configs override only what differs, so the
+# four architectures stay comparable (same lookback, horizon, loss, scaling, seed).
+seed: 42
+freq: h
+h: 336                      # 14-day horizon (the required forecast length)
+input_size: 504             # 3-week lookback — covers daily (24h) + weekly (168h) seasonality
+
+# Training (max_steps is a CEILING; early stopping ends each model when val loss plateaus,
+# so DLinear/TiDE stop fast while TFT/TSMixerx get headroom to converge — fair comparison).
+max_steps: 5000
+learning_rate: 0.001
+val_check_steps: 50
+early_stop_patience_steps: 3
+val_size: 504               # validation tail reserved for the early-stop monitor
+
+# Compute + memory. Tuned for a 24GB cloud GPU (Lightning AI). neuralforecast memory scales with
+# windows_batch_size; the local 8GB GPU could only do wbs~32. On 24GB, wbs=128 is comfortable for
+# TiDE/TSMixerx/TFT. NOTE: neuralforecast's DLinear is pathologically memory-hungry (~0.35GiB per
+# window) so dlinear.yaml overrides these down — re-probe memory on the actual instance before the
+# full runs.
+accelerator: gpu
+devices: 1
+batch_size: 32              # series per batch
+windows_batch_size: 128     # training windows per step (the main memory driver)
+inference_windows_batch_size: 128
+valid_batch_size: 64
+
+# Normalization: uniform per-series robust scaling for all models (RevIN-like; handles the
+# within-series level shifts). Model-internal temporal scaler off; TSMixerx's own RevIN is
+# disabled in its config to avoid double-normalizing.
+local_scaler_type: robust
+scaler_type: identity
+
+# Observability: show the Lightning/neuralforecast progress bar on these (long, manual) training
+# runs so they don't read as hung. Tests/CI stay quiet — registry.py defaults it off via setdefault.
+enable_progress_bar: true

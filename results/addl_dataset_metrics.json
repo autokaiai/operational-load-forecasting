@@ -1,0 +1,545 @@
+{
+  "m5": {
+    "dataset": "m5",
+    "synthetic": false,
+    "source": "parquet:/data/m5/derived/m5_long.parquet",
+    "selection": "stratified(dept_id,store_id)",
+    "freq": "D",
+    "n_series": 500,
+    "n_rows": 970500,
+    "split": {
+      "train_steps": 1885,
+      "gap": 28,
+      "score_len": 28,
+      "forecast_len": 56
+    },
+    "seed": 42,
+    "meta": {
+      "source": "parquet:/data/m5/derived/m5_long.parquet",
+      "selection": "stratified(dept_id,store_id)",
+      "seed": 42,
+      "n_series": 500,
+      "n_rows": 970500,
+      "composition": {
+        "dept_id": {
+          "FOODS_1": 40,
+          "FOODS_2": 70,
+          "FOODS_3": 130,
+          "HOBBIES_1": 70,
+          "HOBBIES_2": 20,
+          "HOUSEHOLD_1": 90,
+          "HOUSEHOLD_2": 80
+        },
+        "store_id": {
+          "CA_1": 50,
+          "CA_2": 50,
+          "CA_3": 50,
+          "CA_4": 50,
+          "TX_1": 50,
+          "TX_2": 50,
+          "TX_3": 50,
+          "WI_1": 50,
+          "WI_2": 50,
+          "WI_3": 50
+        }
+      }
+    },
+    "models": {
+      "naive": {
+        "status": "ok",
+        "metrics": {
+          "wape": 0.9832941289424415,
+          "mae": 1.4630714285714286,
+          "mse": 9.879928571428572,
+          "rmse": 3.1432353668518958,
+          "mape": null,
+          "smape": 0.8661688997679315,
+          "zero_frac": 0.532857,
+          "mape_note": "undefined: 7460/14000 scored rows have y=0; MAPE's per-row division is not rescuable on a zero-inflated target",
+          "mape_nonzero": 0.8895655239190965,
+          "smape_zero_share": 1.2304,
+          "smape_note": "degenerate: every y=0 row scores the 2.0 ceiling, so smape_zero_share of this figure is the zero rate rather than forecast skill",
+          "seasonality": 7
+        },
+        "seconds": 0.2
+      },
+      "seasonal_naive": {
+        "status": "ok",
+        "metrics": {
+          "wape": 0.9262637415390523,
+          "mae": 1.3782142857142856,
+          "mse": 8.060214285714286,
+          "rmse": 2.8390516525266474,
+          "mape": null,
+          "smape": 0.858102370983505,
+          "zero_frac": 0.532857,
+          "mape_note": "undefined: 7460/14000 scored rows have y=0; MAPE's per-row division is not rescuable on a zero-inflated target",
+          "mape_nonzero": 0.8767172383221626,
+          "smape_zero_share": 1.2419,
+          "smape_note": "degenerate: every y=0 row scores the 2.0 ceiling, so smape_zero_share of this figure is the zero rate rather than forecast skill",
+          "seasonality": 7
+        },
+        "seconds": 0.6
+      },
+      "seasonal_mean": {
+        "status": "ok",
+        "metrics": {
+          "wape": 0.776390338361,
+          "mae": 1.155213367028428,
+          "mse": 5.091212007234422,
+          "rmse": 2.256371424928622,
+          "mape": null,
+          "smape": 1.4702750087405527,
+          "zero_frac": 0.532857,
+          "mape_note": "undefined: 7460/14000 scored rows have y=0; MAPE's per-row division is not rescuable on a zero-inflated target",
+          "mape_nonzero": 0.6549379251266083,
+          "smape_zero_share": 0.7248,
+          "smape_note": "degenerate: every y=0 row scores the 2.0 ceiling, so smape_zero_share of this figure is the zero rate rather than forecast skill",
+          "seasonality": 7
+        },
+        "seconds": 0.3
+      },
+      "chronos2": {
+        "status": "ok",
+        "metrics": {
+          "wape": 0.7208546220792719,
+          "mae": 1.0725801880380936,
+          "mse": 5.512696427396654,
+          "rmse": 2.3479132069556266,
+          "mape": null,
+          "smape": 1.553843372567024,
+          "zero_frac": 0.532857,
+          "mape_note": "undefined: 7460/14000 scored rows have y=0; MAPE's per-row division is not rescuable on a zero-inflated target",
+          "mape_nonzero": 0.7391439160211021,
+          "smape_zero_share": 0.6859,
+          "smape_note": "degenerate: every y=0 row scores the 2.0 ceiling, so smape_zero_share of this figure is the zero rate rather than forecast skill",
+          "seasonality": 7
+        },
+        "seconds": 0.0
+      },
+      "lgbm": {
+        "status": "ok",
+        "metrics": {
+          "wape": 0.8884045856289396,
+          "mae": 1.3218825659454603,
+          "mse": 5.575955962921923,
+          "rmse": 2.361346218351287,
+          "mape": null,
+          "smape": 1.327715277538586,
+          "zero_frac": 0.532857,
+          "mape_note": "undefined: 7460/14000 scored rows have y=0; MAPE's per-row division is not rescuable on a zero-inflated target",
+          "mape_nonzero": 0.5354338833263507,
+          "smape_zero_share": 0.8027,
+          "smape_note": "degenerate: every y=0 row scores the 2.0 ceiling, so smape_zero_share of this figure is the zero rate rather than forecast skill",
+          "seasonality": 7
+        },
+        "seconds": 7.1
+      },
+      "tft": {
+        "status": "ok",
+        "metrics": {
+          "wape": 0.7207471848801615,
+          "mae": 1.0724203291599033,
+          "mse": 5.593029021508646,
+          "rmse": 2.364958566552202,
+          "mape": null,
+          "smape": 1.6028792989567622,
+          "zero_frac": 0.532857,
+          "mape_note": "undefined: 7460/14000 scored rows have y=0; MAPE's per-row division is not rescuable on a zero-inflated target",
+          "mape_nonzero": 0.7150502391003353,
+          "smape_zero_share": 0.6649,
+          "smape_note": "degenerate: every y=0 row scores the 2.0 ceiling, so smape_zero_share of this figure is the zero rate rather than forecast skill",
+          "seasonality": 7
+        },
+        "seconds": 47.1
+      },
+      "cascade": {
+        "status": "ok",
+        "metrics": {
+          "wape": 0.7242086475628186,
+          "mae": 1.0775707383843625,
+          "mse": 5.702566993711592,
+          "rmse": 2.3880048144238724,
+          "mape": null,
+          "smape": 1.5926618909073331,
+          "zero_frac": 0.532857,
+          "mape_note": "undefined: 7460/14000 scored rows have y=0; MAPE's per-row division is not rescuable on a zero-inflated target",
+          "mape_nonzero": 0.7168966650714726,
+          "smape_zero_share": 0.6691,
+          "smape_note": "degenerate: every y=0 row scores the 2.0 ceiling, so smape_zero_share of this figure is the zero rate rather than forecast skill",
+          "seasonality": 7
+        },
+        "seconds": 49.4
+      },
+      "blend": {
+        "status": "ok",
+        "metrics": {
+          "wape": 0.7518102825992093,
+          "mae": 1.1186399997731522,
+          "mse": 5.441501421416806,
+          "rmse": 2.332702600293661,
+          "mape": null,
+          "smape": 1.4880148020421018,
+          "zero_frac": 0.532857,
+          "mape_note": "undefined: 7460/14000 scored rows have y=0; MAPE's per-row division is not rescuable on a zero-inflated target",
+          "mape_nonzero": 0.6522209114577528,
+          "smape_zero_share": 0.7162,
+          "smape_note": "degenerate: every y=0 row scores the 2.0 ceiling, so smape_zero_share of this figure is the zero rate rather than forecast skill"
+        },
+        "weight": 0.24,
+        "question": "does the model we ACTUALLY SUBMIT transfer? (shipped weight, no refit)"
+      },
+      "blend_refit": {
+        "status": "ok",
+        "metrics": {
+          "wape": 0.7239719157811253,
+          "mae": 1.0772184984026159,
+          "mse": 5.701509324092392,
+          "rmse": 2.3877833494880543,
+          "mape": null,
+          "smape": 1.579519033764476,
+          "zero_frac": 0.532857,
+          "mape_note": "undefined: 7460/14000 scored rows have y=0; MAPE's per-row division is not rescuable on a zero-inflated target",
+          "mape_nonzero": 0.7166044608281886,
+          "smape_zero_share": 0.6747,
+          "smape_note": "degenerate: every y=0 row scores the 2.0 ceiling, so smape_zero_share of this figure is the zero rate rather than forecast skill"
+        },
+        "weight": 0.0,
+        "shipped_weight": 0.24,
+        "weight_shift": -0.24,
+        "fitted_on": "the gap half of the horizon block (disjoint from the scored rows)",
+        "fit_rows": 14000,
+        "fit_wape": 0.68284,
+        "question": "could this architecture be TUNED here? (weight refit on the gap half)"
+      }
+    },
+    "notes": {
+      "split": "train | gap(h) | score(h) \u2014 mirrors our private-test +h offset",
+      "metric": "WAPE primary; MAE/MSE/RMSE/MAPE/sMAPE reported",
+      "seeds": "SINGLE SEED (plan 3.6: single for an A/B, frozen five for a finalist). These are single-draw absolutes; on our own data that spread is ~0.003.",
+      "blend": "post-hoc at the SHIPPED weight 0.24, not refitted on this corpus"
+    },
+    "covariate": {
+      "blocks": [
+        [
+          1857,
+          28
+        ],
+        [
+          1829,
+          28
+        ],
+        [
+          1801,
+          28
+        ],
+        [
+          1773,
+          28
+        ],
+        [
+          1745,
+          28
+        ],
+        [
+          1717,
+          28
+        ],
+        [
+          1689,
+          28
+        ],
+        [
+          1661,
+          28
+        ],
+        [
+          1633,
+          28
+        ],
+        [
+          1605,
+          28
+        ],
+        [
+          1577,
+          28
+        ],
+        [
+          1549,
+          28
+        ],
+        [
+          1521,
+          28
+        ],
+        [
+          1493,
+          28
+        ],
+        [
+          1465,
+          28
+        ],
+        [
+          1437,
+          28
+        ],
+        [
+          1409,
+          28
+        ],
+        [
+          1381,
+          28
+        ],
+        [
+          1353,
+          28
+        ],
+        [
+          1325,
+          28
+        ],
+        [
+          1297,
+          28
+        ],
+        [
+          1269,
+          28
+        ],
+        [
+          1241,
+          28
+        ],
+        [
+          1213,
+          28
+        ],
+        [
+          1185,
+          28
+        ],
+        [
+          1157,
+          28
+        ],
+        [
+          1129,
+          28
+        ],
+        [
+          1101,
+          28
+        ],
+        [
+          1073,
+          28
+        ],
+        [
+          1045,
+          28
+        ],
+        [
+          1017,
+          28
+        ],
+        [
+          989,
+          28
+        ],
+        [
+          961,
+          28
+        ],
+        [
+          933,
+          28
+        ],
+        [
+          905,
+          28
+        ],
+        [
+          877,
+          28
+        ],
+        [
+          849,
+          28
+        ],
+        [
+          821,
+          28
+        ],
+        [
+          793,
+          28
+        ],
+        [
+          765,
+          28
+        ],
+        [
+          737,
+          28
+        ],
+        [
+          709,
+          28
+        ],
+        [
+          681,
+          28
+        ],
+        [
+          653,
+          28
+        ],
+        [
+          625,
+          28
+        ],
+        [
+          597,
+          28
+        ],
+        [
+          569,
+          28
+        ],
+        [
+          541,
+          28
+        ],
+        [
+          513,
+          28
+        ],
+        [
+          485,
+          28
+        ],
+        [
+          457,
+          28
+        ],
+        [
+          429,
+          28
+        ],
+        [
+          401,
+          28
+        ],
+        [
+          373,
+          28
+        ],
+        [
+          345,
+          28
+        ],
+        [
+          317,
+          28
+        ],
+        [
+          289,
+          28
+        ],
+        [
+          261,
+          28
+        ],
+        [
+          233,
+          28
+        ],
+        [
+          205,
+          28
+        ],
+        [
+          177,
+          28
+        ],
+        [
+          149,
+          28
+        ],
+        [
+          121,
+          28
+        ],
+        [
+          93,
+          28
+        ],
+        [
+          65,
+          28
+        ],
+        [
+          37,
+          28
+        ],
+        [
+          9,
+          28
+        ]
+      ],
+      "n_steps": 1885,
+      "warmup_steps": 9,
+      "capped": false,
+      "horizon_block": [
+        1885,
+        56
+      ],
+      "seconds": 917.7
+    },
+    "skill": {
+      "definition": "skill = 1 - wape(arm) / wape(SKILL_BASELINE)",
+      "baseline": "seasonal_naive",
+      "why": "absolute WAPE is not comparable across corpora (ours has no zero rows and a mean of 9.9; M5 is 49% zeros at a mean of 1.6). The ratio to a baseline defined identically on both datasets is the comparable quantity.",
+      "baseline_wape": 0.9262637415390523,
+      "our_reference": {
+        "naive": 0.5471,
+        "seasonal_naive": 0.4792,
+        "seasonal_mean": 0.3269,
+        "tft": 0.15138,
+        "cascade": 0.13429,
+        "blend": 0.13162
+      },
+      "our_reference_skill": {
+        "naive": -0.1417,
+        "seasonal_mean": 0.3178,
+        "tft": 0.6841,
+        "cascade": 0.7198,
+        "blend": 0.7253
+      },
+      "arms": {
+        "naive": -0.0616,
+        "seasonal_naive": 0.0,
+        "seasonal_mean": 0.1618,
+        "chronos2": 0.2218,
+        "lgbm": 0.0409,
+        "tft": 0.2219,
+        "cascade": 0.2181,
+        "blend": 0.1883,
+        "blend_refit": 0.2184
+      }
+    },
+    "contamination_check": {
+      "reference_lift_on_our_clean_data": 0.083,
+      "rule": "lift ~<= +8.3% -> the zero-shot transfer claim holds; lift >> +8.3% -> the corpus check is wrong and the dataset must be re-examined for pretraining overlap",
+      "tft_wape": 0.7207471848801615,
+      "cascade_wape": 0.7242086475628186,
+      "cascade_lift_vs_tft": -0.0048,
+      "verdict": "consistent with the clean reference"
+    },
+    "label": "panel",
+    "chronos_revision": "29ec3766d36d6f73f0696f85560a422f50e8498c"
+  }
+}

@@ -1,0 +1,8 @@
+# KAN — Kolmogorov-Arnold network (learnable spline activations). Full futr+stat exog. At vanilla
+# defaults this is by far the heaviest model (~129M params) and the spline ops are slow, so cap the
+# batch hard on the 24GB L4; if it still OOMs, drop windows_batch_size further or skip it.
+model: KAN
+name: kan
+
+windows_batch_size: 32
+inference_windows_batch_size: 32

@@ -1,0 +1,4 @@
+# NBEATSx — N-BEATS with exogenous blocks (basis-expansion MLP). Full futr+stat exog.
+# Inherits base.yaml.
+model: NBEATSx
+name: nbeatsx

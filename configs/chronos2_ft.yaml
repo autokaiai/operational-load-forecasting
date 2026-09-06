@@ -1,0 +1,19 @@
+# Chronos-2 LoRA fine-tuning (benchmark / ensemble candidate; NOT a submission model).
+# Consumed by src.models.chronos2_finetune. Evaluated on the same gapped/nogap splits as the
+# nf models via src.models.chronos2_eval.run_mode, so WAPE compares to TFT (0.136) and
+# zero-shot Chronos-2 (0.190).
+#
+# Quick single-run check: seed 42, no CV, no multi-seed (see plan). batch_size/context_length
+# are tuned against the measured peak VRAM — start here and lower batch_size first if it OOMs.
+
+finetune_mode: lora        # r=8 default adapter (~5-10MB); lr 1e-5 recommended for LoRA
+learning_rate: 1.0e-5
+num_steps: 1000
+batch_size: 192            # counts variates; each series = 30-variate group => ~7 series/batch.
+                           # Tuned for Modal L4 24GB: bs=256@ctx2048 OOMs (>24GB); bs=192@ctx1024 fits.
+                           # (Local 8GB RTX 4060 only fits 1 series/batch = bs<=32, used for the smoke.)
+context_length: 1024       # 6-week lookback (>> nf models' 504h); halves activation memory vs 2048
+prediction_length: 672     # deployed gapped horizon (gap 336 + scored 336) — train matches inference
+min_past: 512              # min context steps; series < min_past+prediction_length are dropped
+seed: 42
+device: cuda

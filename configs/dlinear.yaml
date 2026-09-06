@@ -1,0 +1,13 @@
+# DLinear — linear trend/seasonal decomposition. Covariate-free baseline: neuralforecast's
+# DLinear rejects exogenous inputs, so it isolates how much the known-future covariates buy us.
+model: DLinear
+name: dlinear
+moving_avg_window: 25   # decomposition kernel (~1 day) splitting trend vs seasonal
+
+# neuralforecast's DLinear uses ~0.35 GiB per training window (far more than TFT) due to its
+# decomposition / no-exog path, so its batch is capped even on a 24GB GPU. A small batch does not
+# disadvantage a linear baseline (batch-insensitive). Alternatively set accelerator: cpu (DLinear
+# is tiny and fast on CPU). Re-probe peak memory on the instance before committing to a value.
+windows_batch_size: 32
+inference_windows_batch_size: 32
+valid_batch_size: 32

@@ -1,0 +1,556 @@
+{
+ "lane": "1C",
+ "members": [
+  "chronos_full_ft",
+  "casc_bag5",
+  "tree_interp"
+ ],
+ "features": [
+  "hour_sin",
+  "hour_cos",
+  "dow_sin",
+  "dow_cos",
+  "is_weekend",
+  "trend",
+  "workload_intensity",
+  "demand_forecast",
+  "staffing_forecast",
+  "upstream_quality_forecast",
+  "promotion_intensity",
+  "shock_risk",
+  "maintenance_known",
+  "unit_reliability_forecast",
+  "queue_pressure_forecast",
+  "network_pressure_forecast",
+  "event_load_forecast",
+  "service_irregularity_risk_forecast",
+  "throughput_disruption_risk_forecast",
+  "nominal_capacity",
+  "zone_sin",
+  "zone_cos",
+  "demand_forecast_missing",
+  "staffing_forecast_missing",
+  "upstream_quality_forecast_missing",
+  "shock_risk_missing",
+  "unit_reliability_forecast_missing",
+  "queue_pressure_forecast_missing",
+  "network_pressure_forecast_missing",
+  "event_load_forecast_missing",
+  "service_irregularity_risk_forecast_missing",
+  "throughput_disruption_risk_forecast_missing",
+  "_spread",
+  "_blk"
+ ],
+ "absolute_time_features": [
+  "trend",
+  "_blk"
+ ],
+ "embargo_hours": 336,
+ "gamma_grid": [
+  0.0,
+  0.1,
+  0.2,
+  0.3,
+  0.5,
+  0.7,
+  1.0
+ ],
+ "lgbm_params": {
+  "objective": "l1",
+  "learning_rate": 0.05,
+  "num_leaves": 31,
+  "min_data_in_leaf": 200,
+  "feature_fraction": 0.8,
+  "bagging_fraction": 0.8,
+  "bagging_freq": 1,
+  "verbosity": -1,
+  "seed": 42,
+  "bagging_seed": 42,
+  "feature_fraction_seed": 42
+ },
+ "num_boost_round": 400,
+ "arms_searched": 2,
+ "selection_note": "2 feature sets x 3 instruments. Every CI is conditional on that search.",
+ "prior_null": {
+  "source": "results/ensemble_metalearner.json",
+  "mlp_meta_learner_vs_fixed_blend_temporal_holdout": [
+   0.1337,
+   0.1247
+  ],
+  "note": "An MLP combiner over four members lost by 0.009. This lane asks a DIFFERENT question \u2014 a tree on COVARIATES, not a learned combiner over member predictions."
+ },
+ "forward_chaining_extended": {
+  "instrument": "forward_chaining_extended",
+  "gamma": 0.39999999999999997,
+  "gamma_curve_inner_val": {
+   "per_fold": [
+    {
+     "scored_cutoff": 2976,
+     "n_train_rows": 32256,
+     "train_halves": {
+      "near": 32256
+     },
+     "train_ends": "2023-05-04 23:00:00",
+     "scored_block_starts": "2023-05-19 00:00:00",
+     "gamma": 0.5,
+     "delta_this_fold": 0.0005273624417390238
+    },
+    {
+     "scored_cutoff": 3312,
+     "n_train_rows": 96768,
+     "train_halves": {
+      "near": 64512,
+      "far": 32256
+     },
+     "train_ends": "2023-05-18 23:00:00",
+     "scored_block_starts": "2023-06-02 00:00:00",
+     "gamma": 0.2,
+     "delta_this_fold": 0.00037877301215361037
+    },
+    {
+     "scored_cutoff": 3648,
+     "n_train_rows": 161280,
+     "train_halves": {
+      "near": 96768,
+      "far": 64512
+     },
+     "train_ends": "2023-06-01 23:00:00",
+     "scored_block_starts": "2023-06-16 00:00:00",
+     "gamma": 0.5,
+     "delta_this_fold": 0.002454279482641708
+    }
+   ]
+  },
+  "stacked_wape": 0.13049018297753445,
+  "blend_wape": 0.13162347474899944,
+  "delta": 0.0011332917714649837,
+  "se": 0.00013816516534089182,
+  "ci95": [
+   0.0008620775158586829,
+   0.00139479139947496
+  ],
+  "ci_excludes_zero": true,
+  "windows_won": [
+   2976,
+   3312,
+   3648
+  ],
+  "windows_total": 3,
+  "all_windows_won": true,
+  "global_weights": null,
+  "top_gain": {},
+  "folds": [
+   {
+    "scored_cutoff": 2976,
+    "n_train_rows": 32256,
+    "train_halves": {
+     "near": 32256
+    },
+    "train_ends": "2023-05-04 23:00:00",
+    "scored_block_starts": "2023-05-19 00:00:00",
+    "gamma": 0.5,
+    "delta_this_fold": 0.0005273624417390238
+   },
+   {
+    "scored_cutoff": 3312,
+    "n_train_rows": 96768,
+    "train_halves": {
+     "near": 64512,
+     "far": 32256
+    },
+    "train_ends": "2023-05-18 23:00:00",
+    "scored_block_starts": "2023-06-02 00:00:00",
+    "gamma": 0.2,
+    "delta_this_fold": 0.00037877301215361037
+   },
+   {
+    "scored_cutoff": 3648,
+    "n_train_rows": 161280,
+    "train_halves": {
+     "near": 96768,
+     "far": 64512
+    },
+    "train_ends": "2023-06-01 23:00:00",
+    "scored_block_starts": "2023-06-16 00:00:00",
+    "gamma": 0.5,
+    "delta_this_fold": 0.002454279482641708
+   }
+  ],
+  "members": [
+   "chronos_full_ft",
+   "casc_s892",
+   "tree_interp"
+  ],
+  "n_features": 34
+ },
+ "all": {
+  "feature_set": "all",
+  "n_features": 34,
+  "standing_split": {
+   "instrument": "standing_split",
+   "gamma": 0.7,
+   "gamma_curve_inner_val": {
+    "0.0": 0.13160098506965034,
+    "0.1": 0.1308830975548438,
+    "0.2": 0.13027992338282726,
+    "0.3": 0.12980401345142475,
+    "0.5": 0.12924001602627455,
+    "0.7": 0.12917205945055582,
+    "1.0": 0.12998180692557273
+   },
+   "stacked_wape": 0.12322139276124158,
+   "blend_wape": 0.12722074314043602,
+   "delta": 0.0039993503791944385,
+   "se": 0.00040906239401970344,
+   "ci95": [
+    0.0032181234673162714,
+    0.004807847526704284
+   ],
+   "ci_excludes_zero": true,
+   "windows_won": [
+    2976,
+    3312,
+    3648
+   ],
+   "windows_total": 3,
+   "all_windows_won": true,
+   "global_weights": {
+    "chronos_full_ft": 0.4245,
+    "casc_bag5": 0.4482,
+    "tree_interp": 0.1273
+   },
+   "top_gain": {
+    "trend": 32973.43056321144,
+    "_blk": 15904.818954229355,
+    "nominal_capacity": 11473.428885221481,
+    "staffing_forecast": 9778.508108139038,
+    "queue_pressure_forecast": 9748.524423360825,
+    "demand_forecast": 9280.850083351135,
+    "upstream_quality_forecast": 8596.21596980095,
+    "event_load_forecast": 8579.334399223328,
+    "_spread": 7712.03985285759,
+    "maintenance_known": 7312.046326160431,
+    "network_pressure_forecast": 6775.9436893463135,
+    "zone_sin": 5959.766076803207
+   }
+  },
+  "leave_one_window_out": {
+   "instrument": "leave_one_window_out",
+   "gamma": 0.5666666666666667,
+   "gamma_curve_inner_val": {
+    "per_fold_gamma": [
+     0.5,
+     0.7,
+     0.5
+    ]
+   },
+   "stacked_wape": 0.12769177845963672,
+   "blend_wape": 0.13048638784858899,
+   "delta": 0.0027946093889522627,
+   "se": 0.00025990579083037547,
+   "ci95": [
+    0.0022902228763306597,
+    0.0033087112881689204
+   ],
+   "ci_excludes_zero": true,
+   "windows_won": [
+    2976,
+    3312,
+    3648
+   ],
+   "windows_total": 3,
+   "all_windows_won": true,
+   "global_weights": {
+    "chronos_full_ft": 0.455,
+    "casc_bag5": 0.4377,
+    "tree_interp": 0.1073
+   },
+   "top_gain": {
+    "trend": 29659.25095319748,
+    "_blk": 16451.74719929695,
+    "queue_pressure_forecast": 11595.77786231041,
+    "demand_forecast": 11300.456621170044,
+    "staffing_forecast": 10453.379690885544,
+    "nominal_capacity": 10186.239238500595,
+    "upstream_quality_forecast": 9385.972425937653,
+    "event_load_forecast": 9185.930965185165,
+    "_spread": 8573.372699022293,
+    "workload_intensity": 7772.193801164627,
+    "maintenance_known": 6759.452330589294,
+    "network_pressure_forecast": 6270.089759111404
+   }
+  },
+  "forward_chaining_embargo": {
+   "instrument": "forward_chaining_embargo",
+   "gamma": 0.5,
+   "gamma_curve_inner_val": {
+    "per_fold": [
+     {
+      "scored_cutoff": 3312,
+      "skipped": "too few training rows after the 336h embargo (0)"
+     },
+     {
+      "scored_cutoff": 3648,
+      "train_cutoffs": [
+       2976,
+       3312
+      ],
+      "n_train_rows_after_embargo": 32256,
+      "train_ends": "2023-06-01 23:00:00",
+      "scored_block_starts": "2023-06-16 00:00:00",
+      "gamma": 0.5
+     }
+    ]
+   },
+   "stacked_wape": 0.12748751729042423,
+   "blend_wape": 0.13013362204276807,
+   "delta": 0.0026461047523438364,
+   "se": 0.00037361444376269605,
+   "ci95": [
+    0.001925044066385232,
+    0.003360833776625252
+   ],
+   "ci_excludes_zero": true,
+   "windows_won": [
+    3648
+   ],
+   "windows_total": 1,
+   "all_windows_won": true,
+   "global_weights": null,
+   "top_gain": {},
+   "folds": [
+    {
+     "scored_cutoff": 3312,
+     "skipped": "too few training rows after the 336h embargo (0)"
+    },
+    {
+     "scored_cutoff": 3648,
+     "train_cutoffs": [
+      2976,
+      3312
+     ],
+     "n_train_rows_after_embargo": 32256,
+     "train_ends": "2023-06-01 23:00:00",
+     "scored_block_starts": "2023-06-16 00:00:00",
+     "gamma": 0.5
+    }
+   ],
+   "windows_note": "2 of 3 windows \u2014 the oldest cutoff has no older window to train on. The rule here is 2/2."
+  }
+ },
+ "no_abs_time": {
+  "feature_set": "no_abs_time",
+  "n_features": 32,
+  "standing_split": {
+   "instrument": "standing_split",
+   "gamma": 0.7,
+   "gamma_curve_inner_val": {
+    "0.0": 0.13160098506965034,
+    "0.1": 0.13077518232555857,
+    "0.2": 0.13005612334537986,
+    "0.3": 0.1294464866975228,
+    "0.5": 0.12855152219226512,
+    "0.7": 0.1281443649491103,
+    "1.0": 0.12841041925748445
+   },
+   "stacked_wape": 0.12275036278076437,
+   "blend_wape": 0.12722074314043602,
+   "delta": 0.00447038035967165,
+   "se": 0.0004254629707504997,
+   "ci95": [
+    0.0036921026724837376,
+    0.005340001341255324
+   ],
+   "ci_excludes_zero": true,
+   "windows_won": [
+    2976,
+    3312,
+    3648
+   ],
+   "windows_total": 3,
+   "all_windows_won": true,
+   "global_weights": {
+    "chronos_full_ft": 0.4245,
+    "casc_bag5": 0.4482,
+    "tree_interp": 0.1273
+   },
+   "top_gain": {
+    "staffing_forecast": 16452.832308650017,
+    "demand_forecast": 15141.015403985977,
+    "upstream_quality_forecast": 13600.271429300308,
+    "nominal_capacity": 12211.353997468948,
+    "queue_pressure_forecast": 10529.657104253769,
+    "event_load_forecast": 9366.379531621933,
+    "dow_sin": 9270.74411535263,
+    "maintenance_known": 8489.597759246826,
+    "_spread": 8214.796827554703,
+    "network_pressure_forecast": 8008.916782617569,
+    "workload_intensity": 7143.3397564888,
+    "hour_cos": 5540.645751237869
+   }
+  },
+  "leave_one_window_out": {
+   "instrument": "leave_one_window_out",
+   "gamma": 0.5666666666666667,
+   "gamma_curve_inner_val": {
+    "per_fold_gamma": [
+     0.7,
+     0.7,
+     0.3
+    ]
+   },
+   "stacked_wape": 0.12820333765125952,
+   "blend_wape": 0.13048638784858899,
+   "delta": 0.002283050197329467,
+   "se": 0.00025244655131663745,
+   "ci95": [
+    0.001810347333057704,
+    0.0027912492161822023
+   ],
+   "ci_excludes_zero": true,
+   "windows_won": [
+    2976,
+    3312,
+    3648
+   ],
+   "windows_total": 3,
+   "all_windows_won": true,
+   "global_weights": {
+    "chronos_full_ft": 0.455,
+    "casc_bag5": 0.4377,
+    "tree_interp": 0.1073
+   },
+   "top_gain": {
+    "staffing_forecast": 17342.89883160591,
+    "demand_forecast": 16479.68505382538,
+    "upstream_quality_forecast": 13207.312890529633,
+    "queue_pressure_forecast": 12716.598846197128,
+    "nominal_capacity": 10374.372741699219,
+    "dow_sin": 9919.090654373169,
+    "event_load_forecast": 9310.553384184837,
+    "network_pressure_forecast": 9066.768763303757,
+    "workload_intensity": 8994.508224248886,
+    "maintenance_known": 8676.55208325386,
+    "_spread": 8132.719758272171,
+    "hour_sin": 5708.6336414813995
+   }
+  },
+  "forward_chaining_embargo": {
+   "instrument": "forward_chaining_embargo",
+   "gamma": 0.3,
+   "gamma_curve_inner_val": {
+    "per_fold": [
+     {
+      "scored_cutoff": 3312,
+      "skipped": "too few training rows after the 336h embargo (0)"
+     },
+     {
+      "scored_cutoff": 3648,
+      "train_cutoffs": [
+       2976,
+       3312
+      ],
+      "n_train_rows_after_embargo": 32256,
+      "train_ends": "2023-06-01 23:00:00",
+      "scored_block_starts": "2023-06-16 00:00:00",
+      "gamma": 0.3
+     }
+    ]
+   },
+   "stacked_wape": 0.12844007789282536,
+   "blend_wape": 0.13013362204276807,
+   "delta": 0.0016935441499427162,
+   "se": 0.0001999496060091451,
+   "ci95": [
+    0.0012967674027839307,
+    0.0020674302567274317
+   ],
+   "ci_excludes_zero": true,
+   "windows_won": [
+    3648
+   ],
+   "windows_total": 1,
+   "all_windows_won": true,
+   "global_weights": null,
+   "top_gain": {},
+   "folds": [
+    {
+     "scored_cutoff": 3312,
+     "skipped": "too few training rows after the 336h embargo (0)"
+    },
+    {
+     "scored_cutoff": 3648,
+     "train_cutoffs": [
+      2976,
+      3312
+     ],
+     "n_train_rows_after_embargo": 32256,
+     "train_ends": "2023-06-01 23:00:00",
+     "scored_block_starts": "2023-06-16 00:00:00",
+     "gamma": 0.3
+    }
+   ],
+   "windows_note": "2 of 3 windows \u2014 the oldest cutoff has no older window to train on. The rule here is 2/2."
+  }
+ },
+ "verdict": {
+  "admitted": true,
+  "checks": {
+   "ci_excludes_zero": true,
+   "all_scoreable_windows_won": true,
+   "gamma_positive": true,
+   "covers_every_cv_window": true
+  },
+  "deployment_instrument_used": "forward_chaining_extended (near+far training universe)",
+  "deployment_delta": 0.0011332917714649837,
+  "deployment_ci95": [
+   0.0008620775158586829,
+   0.00139479139947496
+  ],
+  "deployment_windows": "3/3",
+  "delta_by_instrument_honesty": {
+   "1_standing_split": 0.0039993503791944385,
+   "2_leave_one_window_out": 0.0027946093889522627,
+   "3_forward_chaining_far_only": 0.0026461047523438364,
+   "4_forward_chaining_extended": 0.0011332917714649837
+  },
+  "per_fold": [
+   {
+    "scored_cutoff": 2976,
+    "n_train_rows": 32256,
+    "train_halves": {
+     "near": 32256
+    },
+    "delta_this_fold": 0.0005273624417390238
+   },
+   {
+    "scored_cutoff": 3312,
+    "n_train_rows": 96768,
+    "train_halves": {
+     "near": 64512,
+     "far": 32256
+    },
+    "delta_this_fold": 0.00037877301215361037
+   },
+   {
+    "scored_cutoff": 3648,
+    "n_train_rows": 161280,
+    "train_halves": {
+     "near": 96768,
+     "far": 64512
+    },
+    "delta_this_fold": 0.002454279482641708
+   }
+  ],
+  "near_rows_do_not_substitute_for_far": {
+   "folds_trained_on_near_only": [
+    2976
+   ],
+   "their_delta": [
+    0.0005273624417390238
+   ]
+  },
+  "leakage_hypothesis": "TESTED AND REJECTED \u2014 ablating ['trend', '_blk'] leaves the gain intact (+0.00447 on the standing split).",
+  "summary": "ADMITTED ON THE DEPLOYMENT-FAITHFUL INSTRUMENT. Forward chaining with a 336h embargo over the near+far universe: +0.00113, CI [+0.00086, +0.00139], 3/3 windows, gamma 0.40. All four bar clauses hold. The leakage account was tested and REJECTED (ablating the absolute-time features leaves the gain intact). NOTE what the number is and is not: the delta shrinks as the instrument gets more honest (+0.00400 -> +0.00113), so the deployable effect is the SMALL one, and it is measured against a blend using casc_s892 rather than the 5-seed bag. Shipping it means a 4th ladder stage, a rebuilt archive and two clean rooms."
+ }
+}

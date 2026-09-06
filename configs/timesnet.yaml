@@ -1,0 +1,8 @@
+# TimesNet — reshapes each series into 2D by discovered periods and applies inception convs.
+# Takes future covariates but NOT static (EXOGENOUS_STAT is False); the capability-aware registry
+# omits the static list automatically. Heavier/slower than the MLP family, so cap the batch.
+model: TimesNet
+name: timesnet
+
+windows_batch_size: 64
+inference_windows_batch_size: 64

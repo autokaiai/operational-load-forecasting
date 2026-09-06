@@ -1,0 +1,39 @@
+# Sprint 2 arm 2C-control — the SWA cascade TFT with the CHRONOS COVARIATE REMOVED.
+#
+# THE QUESTION (2026-09-04): once the cross-series aggregates are in, does `chronos2_forecast`
+# STILL earn its place as a covariate? It is worth +8.3% on its own and it is the most expensive
+# covariate we carry — it requires a whole foundation model's rolling-origin forecast to exist
+# before the TFT can train at all. A9's capacity-weighted system mean is a different route to
+# "what is the rest of the panel doing", and if the two are substitutes rather than complements,
+# the cheaper one should win.
+#
+# EVERY key below is COPIED from configs/tft_chronos_swa.yaml and must stay copied. The ONLY
+# difference between this arm and that one is the member registration's `cascade=()`, which is what
+# removes `chronos2_forecast` (and its `*_missing` flag) from `futr_exog_list()` and switches the
+# training frame from data/derived/train_chronos_cut{cut}.csv back to data/raw/train.csv.
+#
+# Run at ONE seed (892), deliberately — this is an ablation that reads a sign, not
+# a candidate for admission, and a 5-seed bag would buy precision nobody is going to spend.
+#   python -m scripts.member_preds_window --member tft_swa --window 0 --cut-idx 3648 --xs-block A9
+model: TFT
+name: tft_swa
+hidden_size: 64
+n_head: 4
+dropout: 0.1
+
+windows_batch_size: 32
+inference_windows_batch_size: 32
+
+max_steps: 5000
+
+grn_activation: ELU
+
+# --- the lever ------------------------------------------------------------------------------
+# Consumed by registry.build_model, which turns it into a Lightning callback on
+# trainer_kwargs["callbacks"]; it is in _NON_MODEL_KEYS and never reaches the model constructor.
+# No LR schedule of its own: `num_lr_decays` stays at the incumbent's default so this arm measures
+# averaging alone. The two levers are opposed in intent (averaging wants a late trajectory that
+# still moves; decay flattens it), so a combined arm would be unattributable.
+swa:
+  every_n_steps: 50
+  tail_fraction: 0.25

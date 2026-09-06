@@ -1,0 +1,36 @@
+# Final-push lane 1G — the RESIDUAL-TARGET cascade.
+#
+# Identical to configs/tft_chronos.yaml in every hyperparameter. The one difference is
+# `residual_target`, which is a DATA-SIDE transform consumed by
+# `src.models.members.nf_fit_and_sweep` and stripped before the model constructor
+# (`registry._NON_MODEL_KEYS`): the TFT trains on `y - chronos2_forecast` and the channel is added
+# back on the horizon's own rows at inference.
+#
+# WHY THIS IS THE EXPERIMENT. `tft_cascade` hands the frozen Chronos-2 forecast to the VSN as a
+# known-future covariate whose weight the network has to learn. S4 showed that calibration is
+# LOAD-BEARING — matching the train/inference lead cost -0.01455 and lost 3/3 — which means the
+# VSN's handling of the channel is doing real work rather than merely absorbing harm. A residual
+# target removes the need for that calibration entirely: the channel is no longer an input to be
+# trusted or distrusted, it is the baseline. Same data, same backbone, same horizon.
+#
+# IT REPLACES `casc_bag5` IN THE BLEND OR IT DOES NOTHING. It is not a fourth member: its errors
+# are cascade errors and its err-corr against `casc_bag5` will be high.
+#
+# Do not drive this config by hand — the cascade channel is a per-window frame with a provenance
+# sidecar, and only the member path resolves it:
+#   python -m scripts.member_preds_window --member tft_cascade_resid --window 0 --cut-idx 3648
+model: TFT
+name: tft_chronos_resid
+hidden_size: 64
+n_head: 4
+dropout: 0.1
+
+windows_batch_size: 32
+inference_windows_batch_size: 32
+
+max_steps: 5000
+
+grn_activation: ELU
+
+# The lane. Consumed in nf_fit_and_sweep; never reaches the model.
+residual_target: chronos2_forecast

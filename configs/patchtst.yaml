@@ -1,0 +1,5 @@
+# PatchTST — patch-based transformer. Covariate-free in neuralforecast (EXOGENOUS_FUTR/STAT
+# both False), so it's the transformer counterpart to DLinear: a no-exog reference that shows
+# how much the known-future covariates buy the exog-aware models. Inherits base.yaml.
+model: PatchTST
+name: patchtst
